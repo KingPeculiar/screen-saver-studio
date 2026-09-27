@@ -26,9 +26,65 @@
  * ```
  */
 
+// src/App.tsx or src/renderer.tsx
+
+
 import './styles/index.css';
+
 import './app.tsx';
 
-console.log(
-  '👋 This message is being logged by "renderer.ts", included via Vite',
-);
+
+
+import React from 'react';
+
+import { createRoot } from 'react-dom/client';
+
+import { createHashRouter, RouterProvider, Link } from 'react-router-dom';
+
+
+
+const router = createHashRouter([
+
+  {
+
+    path: '/',
+
+    element: (
+
+      `<div>
+
+        <h1>HomePage</h1>
+
+        <Link to="/settings">Go to Settings</Link>
+
+        </div>`
+
+    ),
+
+  },
+
+  {
+
+    path: '/settings',
+
+    element: (
+
+      `<div>
+
+        <h1>Settings Page</h1>
+
+        <Link to="/">Go Home</Link>
+
+        </div>`
+
+    ),
+
+  },
+
+]);
+
+
+
+const root = createRoot(document.getElementById('root')!);
+
+root.render(<RouterProvider router={router} />);
