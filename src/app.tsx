@@ -5,7 +5,7 @@ import { ThemeProvider } from './components/theme-provider';
 
 const root = createRoot(document.body);
 root.render(
-  <ThemeProvider>
+  <ThemeProvider storageKey="vite-ui-theme" defaultTheme="dark">
     <HomePage />
   </ThemeProvider>
 );

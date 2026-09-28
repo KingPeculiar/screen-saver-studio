@@ -1,7 +1,7 @@
 import React from "react";
 import { ModeToggle } from "../components/mode-toggle";
 
-import {ThemeProvider} from "../components/theme-provider";
+// import {ThemeProvider} from "../components/theme-provider";
 
 
 
@@ -9,19 +9,15 @@ export default function HomePage() {
 
   return (
 
-    <ThemeProvider>
+    <div>
 
-      <div>
+      <ModeToggle/>
 
-        <ModeToggle/>
+      <h1>HomePage</h1>
 
-        <h1>HomePage</h1>
+      <p>Welcome to your Electron application.</p>
 
-        <p>Welcome to your Electron application.</p>
-
-      </div>
-
-    </ThemeProvider>
+    </div>
 
   );
 
