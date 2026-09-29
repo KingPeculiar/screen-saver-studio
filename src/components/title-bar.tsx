@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Maximize2, Minimize2, X, Minus } from 'lucide-react'
+import { Button } from '@/components/ui/button';
+
 import './TitleBar.css';
 
 interface TitleBarProps {
@@ -173,7 +176,9 @@ export const TitleBar: React.FC<TitleBarProps> = ({
       {/* Right Region: Non-draggable Window Control Buttons */}
       <div className="title-bar-right">
         <div className="window-controls">
-          <button
+          <Button
+            variant="ghost"
+            size='icon'
             className="control-btn"
             aria-label="Minimize"
             onClick={() => {
@@ -181,9 +186,11 @@ export const TitleBar: React.FC<TitleBarProps> = ({
               setActiveMenu(null);
             }}
           >
-            &#8212;
-          </button>
-          <button
+            <Minus />
+          </Button>
+          <Button
+            variant="ghost"
+            size='icon'
             className="control-btn"
             aria-label="Maximize"
             onClick={() => {
@@ -192,19 +199,14 @@ export const TitleBar: React.FC<TitleBarProps> = ({
             }}
           >
             {isMaximized ? (
-                        /* Restore Icon (overlapping squares) */
-                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor">
-                          <path d="M3.5 1.5h5v5h-5z" />
-                          <path d="M1.5 3.5v5h5" />
-                        </svg>
-                      ) : (
-                        /* Maximize Icon (single square) */
-                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor">
-                          <rect x="1.5" y="1.5" width="7" height="7" />
-                        </svg>
-                      )}
-          </button>
-          <button
+            <Minimize2 />
+          ) : (
+            <Maximize2 />
+          )}
+          </Button>
+          <Button
+            variant="ghost"
+            size='icon'
             className="control-btn close-btn"
             aria-label="Close"
             onClick={() => {
@@ -212,8 +214,8 @@ export const TitleBar: React.FC<TitleBarProps> = ({
               setActiveMenu(null);
             }}
           >
-            &#10005;
-          </button>
+            <X />
+          </Button>
         </div>
       </div>
     </header>

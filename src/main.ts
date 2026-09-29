@@ -14,8 +14,7 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 600,
-    frame: false,
-    transparent: true,
+    // frame: false,
     titleBarStyle: 'hidden',
     webPreferences: {
       preload: path.join(__dirname, MAIN_WINDOW_VITE_DEV_SERVER_URL ? 'preload.js' : 'preload.js'),

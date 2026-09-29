@@ -141,8 +141,8 @@ input {
   background: transparent;
   border: none;
   color: #c9d1d9;
-  width: 44px;
-  height: 38px;
+  /*width: 44px;
+  height: 38px;*/
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
