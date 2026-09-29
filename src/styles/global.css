@@ -1,0 +1,20 @@
+@import "@fontsource-variable/figtree";
+@import "@fontsource-variable/outfit";
+@import "@fontsource-variable/geist-mono";
+@import "tailwindcss";
+@import "./typeset.css";
+
+.typeset-chat {
+  --typeset-font-body: var(--font-figtree);
+  --typeset-font-heading: var(--font-outfit);
+  --typeset-font-mono: var(--font-geist-mono);
+  --typeset-size: 15px;
+  --typeset-leading: 1.75;
+  --typeset-flow: 1em;
+}
+
+:root {
+  --font-figtree: 'Figtree Variable', sans-serif;
+  --font-outfit: 'Outfit Variable', sans-serif;
+  --font-geist-mono: 'Geist Mono Variable', monospace;
+}

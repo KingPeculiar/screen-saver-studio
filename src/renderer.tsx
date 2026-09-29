@@ -28,63 +28,28 @@
 
 // src/App.tsx or src/renderer.tsx
 
-
-import './styles/index.css';
-
-import './app.tsx';
-
-
-
-import React from 'react';
-
-import { createRoot } from 'react-dom/client';
-
-import { createHashRouter, RouterProvider, Link } from 'react-router-dom';
-
-
-
+import "./styles/index.css";
+import "./app.tsx";
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { createHashRouter, RouterProvider, Link } from "react-router-dom";
+import HomePage from "./screens/index";
 const router = createHashRouter([
-
   {
-
-    path: '/',
-
-    element: (
-
-      `<div>
-
-        <h1>HomePage</h1>
-
-        <Link to="/settings">Go to Settings</Link>
-
-        </div>`
-
-    ),
-
+    path: "/",
+    element: <HomePage />,
   },
-
   {
-
-    path: '/settings',
-
+    path: "/settings",
     element: (
-
-      `<div>
-
+      <div>
         <h1>Settings Page</h1>
-
         <Link to="/">Go Home</Link>
-
-        </div>`
-
+      </div>
     ),
-
   },
-
 ]);
 
-
-
-const root = createRoot(document.getElementById('root')!);
+const root = createRoot(document.getElementById("root")!);
 
 root.render(<RouterProvider router={router} />);

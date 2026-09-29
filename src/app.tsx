@@ -1,20 +1,32 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import HomePage from './screens/index';
-import { ThemeProvider } from './components/theme-provider';
-import {TitleBar}  from "./components/title-bar"
-// import TitleBar from './components/title-bar';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import HomePage from "./screens/index";
+import { ThemeProvider } from "./components/theme-provider";
+import { TitleBar } from "./components/title-bar";
+import { createHashRouter, RouterProvider, Link } from "react-router-dom";
 
-const handleSearch = (query: string) => {
-    console.log('App search query executed:', query);
-  };
+const router = createHashRouter([
+  {
+    path: "/",
+    element: <HomePage />,
+  },
+  {
+    path: "/settings",
+    element: (
+      <div>
+        <h1>Settings Page</h1>
+        <Link to="/">Go Home</Link>
+      </div>
+    ),
+  },
+]);
 
 const root = createRoot(document.body);
 root.render(
   <>
-    <TitleBar title="My Workspace" onSearch={handleSearch} />
+    <TitleBar title="My Workspace" />
     <ThemeProvider storageKey="vite-ui-theme" defaultTheme="system">
-      <HomePage />
+      <RouterProvider router={router} />
     </ThemeProvider>
-  </>
+  </>,
 );

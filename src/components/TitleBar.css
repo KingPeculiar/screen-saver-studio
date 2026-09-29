@@ -1,21 +1,37 @@
 #title-bar {
-    padding: 0 0 0 4px;
+  padding: 0 0 0 4px;
+  max-width: 100%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 38px;
   background-color: #1e1e24;
   color: #c9d1d9;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
   font-size: 13px;
   user-select: none;
   border-bottom: 1px solid #2d2d35;
   -webkit-app-region: drag;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .window-controls,
 .control-btn,
-.menu-bar{
+.menu-bar {
   -webkit-app-region: no-drag !important;
 }
 
@@ -38,7 +54,7 @@
 }
 
 .title-bar-center {
-    font-weight: bold;
+  font-weight: bold;
   flex-grow: 1;
   justify-content: center;
   max-width: 380px;
