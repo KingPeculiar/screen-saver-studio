@@ -65,112 +65,15 @@ export const TitleBar: React.FC<TitleBarProps> = ({
       };
     }, []);
 
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && onSearch) {
-      onSearch(searchQuery.trim());
-    }
-  };
-
-  const toggleMenu = (menuName: string) => {
-    setActiveMenu((prev) => (prev === menuName ? null : menuName));
-  };
-
   return (
     <header id="title-bar">
-      {/* Left Region: Logo & Interactive Dropdown Menus */}
       <div className="title-bar-left">
-        <div className="app-icon">⚡</div>
-
         <nav className="menu-bar">
-          {/* File Menu */}
-          <div className="menu-item">
-            <button
-              className={`menu-btn ${activeMenu === 'file' ? 'active' : ''}`}
-              onClick={() => toggleMenu('file')}
-            >
-              File
-            </button>
-            {activeMenu === 'file' && (
-              <div className="dropdown-content">
-                <button
-                  className="dropdown-item"
-                  onClick={() => {
-                    setActiveMenu(null);
-                    console.log('New Window');
-                  }}
-                >
-                  New Window
-                </button>
-                <div className="dropdown-divider" />
-                <button
-                  className="dropdown-item"
-                  onClick={() => window.electronAPI.closeWindow()}
-                >
-                  Exit
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Edit Menu */}
-          <div className="menu-item">
-            <button
-              className={`menu-btn ${activeMenu === 'edit' ? 'active' : ''}`}
-              onClick={() => toggleMenu('edit')}
-            >
-              Edit
-            </button>
-            {activeMenu === 'edit' && (
-              <div className="dropdown-content">
-                <button
-                  className="dropdown-item"
-                  onClick={() => {
-                    setActiveMenu(null);
-                    console.log('Undo');
-                  }}
-                >
-                  Undo
-                </button>
-                <button
-                  className="dropdown-item"
-                  onClick={() => {
-                    setActiveMenu(null);
-                    console.log('Redo');
-                  }}
-                >
-                  Redo
-                </button>
-              </div>
-            )}
-          </div>
+          ScreenSaver studio
         </nav>
       </div>
-
-      {/* Center Region: Interactive Search Input */}
       <div className="title-bar-center">
-        <div className="search-box">
-          <svg
-            className="search-icon"
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.3-4.3" />
-          </svg>
-          <input
-            ref={searchInputRef}
-            type="text"
-            className="title-search"
-            placeholder={`${title} - Search (Ctrl+K)`}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleSearchKeyDown}
-          />
-        </div>
+        Preferences
       </div>
 
       {/* Right Region: Non-draggable Window Control Buttons */}
