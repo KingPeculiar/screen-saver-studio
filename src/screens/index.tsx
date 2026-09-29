@@ -9,7 +9,7 @@ export default function HomePage() {
 
   return (
 
-    <div>
+    <main>
 
       <ModeToggle/>
 
@@ -17,7 +17,7 @@ export default function HomePage() {
 
       <p>Welcome to your Electron application.</p>
 
-    </div>
+    </main>
 
   );
 
