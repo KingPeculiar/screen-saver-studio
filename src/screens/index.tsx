@@ -37,10 +37,10 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <main className="typeset typeset-chat m-auto h-screen overflow-y-auto">
+    <main className="typeset typeset-chat m-auto">
       <header>
-        <div className="flex flex-row justify-between items-center pb-6 pt-10">
-          <div className="flex flex-col gap-2">
+        <div className="flex flex-row justify-between items-center pb-5 pt-10">
+          <div className="flex flex-col gap-1">
             <h1>Pick your preference...</h1>
             <p>Choose your screen saver preference below.</p>
           </div>
@@ -57,7 +57,7 @@ export default function HomePage() {
             <Card
               key={index}
               className="flex flex-col gap-4 cursor-pointer"
-              onClick={() => navigate("/settings")}
+              onClick={() => navigate(`/${s.title.toLowerCase()}`)}
             >
               <CardHeader className="px-8 py-4">
                 <span className="flex flex-row items-center p-4 bg-[#BCF8EC] max-w-max rounded-4xl">

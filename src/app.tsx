@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import HomePage from "./screens/index";
+import Wallpaper from "./screens/wallpaper";
 import { ThemeProvider } from "./components/theme-provider";
 import { TitleBar } from "./components/title-bar";
 import { createHashRouter, RouterProvider, Link } from "react-router-dom";
@@ -12,13 +13,8 @@ const router = createHashRouter([
     element: <HomePage />,
   },
   {
-    path: "/settings",
-    element: (
-      <div>
-        <h1>Settings Page</h1>
-        <Link to="/">Go Home</Link>
-      </div>
-    ),
+    path: "/wallpaper",
+    element: <Wallpaper />,
   },
 ]);
 
@@ -28,7 +24,7 @@ root.render(
     <ThemeProvider storageKey="vite-ui-theme" defaultTheme="system">
       <div className="m-auto typeset typeset-chat">
         <TitleBar title="My Workspace" />
-        <div className="m-auto typeset typeset-chat">
+        <div className="m-auto typeset typeset-chat h-screen overflow-y-auto">
           <RouterProvider router={router} />
         </div>
         <Footer />
