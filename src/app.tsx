@@ -26,9 +26,11 @@ const root = createRoot(document.body);
 root.render(
   <>
     <ThemeProvider storageKey="vite-ui-theme" defaultTheme="system">
-      <TitleBar title="My Workspace" />
       <div className="m-auto typeset typeset-chat">
-        <RouterProvider router={router} />
+        <TitleBar title="My Workspace" />
+        <div className="m-auto typeset typeset-chat">
+          <RouterProvider router={router} />
+        </div>
         <Footer />
       </div>
     </ThemeProvider>

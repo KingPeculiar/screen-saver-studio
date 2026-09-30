@@ -6,6 +6,7 @@
   justify-content: space-between;
   align-items: center;
   height: 38px;
+  flex-shrink: 0;
   background-color: #1e1e24;
   color: #c9d1d9;
   font-family:

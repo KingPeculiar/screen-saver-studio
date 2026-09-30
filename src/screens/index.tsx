@@ -37,7 +37,7 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <main className="typeset typeset-chat m-auto">
+    <main className="typeset typeset-chat m-auto h-screen overflow-y-auto">
       <header>
         <div className="flex flex-row justify-between items-center pb-6 pt-10">
           <div className="flex flex-col gap-2">
