@@ -4,6 +4,7 @@ import HomePage from "./screens/index";
 import { ThemeProvider } from "./components/theme-provider";
 import { TitleBar } from "./components/title-bar";
 import { createHashRouter, RouterProvider, Link } from "react-router-dom";
+import Footer from "./components/footer";
 
 const router = createHashRouter([
   {
@@ -24,9 +25,12 @@ const router = createHashRouter([
 const root = createRoot(document.body);
 root.render(
   <>
-    <TitleBar title="My Workspace" />
     <ThemeProvider storageKey="vite-ui-theme" defaultTheme="system">
-      <RouterProvider router={router} />
+      <TitleBar title="My Workspace" />
+      <div className="m-auto typeset typeset-chat">
+        <RouterProvider router={router} />
+        <Footer />
+      </div>
     </ThemeProvider>
   </>,
 );

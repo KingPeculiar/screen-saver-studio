@@ -37,7 +37,7 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <main className="typeset typeset-chat max-w-[37em] m-auto">
+    <main className="typeset typeset-chat m-auto">
       <header>
         <div className="flex flex-row justify-between items-center pb-6 pt-10">
           <div className="flex flex-col gap-2">
@@ -77,9 +77,6 @@ export default function HomePage() {
             </Card>
           ))}
         </div>
-        <div></div>
-        <h1>HomePage</h1>
-        <p>Welcome to your Electron application.</p>
       </header>
     </main>
   );
