@@ -226,7 +226,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: var(--sidebar-accent);
   border-radius: 4px;
 }
 

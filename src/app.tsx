@@ -6,6 +6,7 @@ import { ThemeProvider } from "./components/theme-provider";
 import { TitleBar } from "./components/title-bar";
 import { createHashRouter, RouterProvider, Link } from "react-router-dom";
 import Footer from "./components/footer";
+import { Toaster } from "./components/ui/toast";
 
 const router = createHashRouter([
   {
@@ -27,6 +28,7 @@ root.render(
         <div className="m-auto typeset typeset-chat h-screen overflow-y-auto">
           <RouterProvider router={router} />
         </div>
+        <Toaster />
         <Footer />
       </div>
     </ThemeProvider>

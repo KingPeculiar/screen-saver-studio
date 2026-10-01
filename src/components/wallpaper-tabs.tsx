@@ -1,4 +1,4 @@
-import React, { useRef, ChangeEvent } from "react";
+import React, { useRef, useState, ChangeEvent } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import { WandSparkles, Upload } from "lucide-react";
 import { assetsByCategory } from "../lib/assets";
@@ -9,17 +9,42 @@ export function WallpaperTabs() {
   const categories = Object.keys(assetsByCategory);
   const defaultCategory = categories[0] || "anime";
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [savedPath, setSavedPath] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleButtonClick = () => {
     // Programmatically trigger the file input
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files && files.length > 0) {
-      console.log("Selected file:", files[0].name);
-      // Handle your file upload logic here
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    setIsSaving(true);
+    setError(null);
+
+    try {
+      // 1. Convert File to ArrayBuffer for IPC transfer
+      const arrayBuffer = await file.arrayBuffer();
+
+      // 2. Invoke Main Process via IPC bridge
+      const result = await window.electronAPI.saveUploadedFile(
+        arrayBuffer,
+        file.name,
+      );
+
+      if (result.success && result.filePath) {
+        setSavedPath(result.filePath);
+      } else {
+        setError(result.error || "Failed to save wallpaper.");
+      }
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred.");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -44,7 +69,8 @@ export function WallpaperTabs() {
             );
           })}
           <Button
-            onClick={handleButtonClick}
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isSaving}
             variant="outline"
             className="cursor-pointer flex items-center gap-2 flex-col p-4 text-white border border-blue-950 bg-gray-900 rounded-3xl capitalize data-[state=active]:bg-blue-900 w-full h-full"
           >
@@ -56,7 +82,9 @@ export function WallpaperTabs() {
               className="hidden"
             />
             <Upload color="#ffffff" />
-            <span className="text-[18px] text-gray-400">Import Wallpapers</span>
+            <span className="text-[18px] text-gray-400">
+              {isSaving ? "Saving..." : "Import Wallpapers"}
+            </span>
           </Button>
         </TabsList>
         {Object.entries(assetsByCategory).map(([folderName, files]) => {
