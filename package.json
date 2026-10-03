@@ -1,6 +1,6 @@
 {
-  "name": "screen-saver-app",
-  "productName": "screen-saver-app",
+  "name": "screen-saver-studio",
+  "productName": "screen-saver-studio",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
@@ -53,6 +53,7 @@
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",
     "electron-squirrel-startup": "^1.0.1",
+    "electron-store": "^11.0.2",
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.48.0",
     "react": "^19.3.0",

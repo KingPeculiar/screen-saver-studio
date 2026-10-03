@@ -75,7 +75,7 @@ export function SavedWallpapers() {
                   <img
                     src={mediaUrl}
                     alt="Custom wallpaper"
-                    className="w-full h-40 object-cover hover:scale-105 transition-transform duration-200"
+                    className="w-full h-40 object-cover m-0 hover:scale-105 transition-transform duration-200"
                   />
                 </div>
               </ContextMenuTrigger>

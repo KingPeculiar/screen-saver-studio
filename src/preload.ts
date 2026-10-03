@@ -23,6 +23,10 @@ contextBridge.exposeInMainWorld("electronAPI", {
     };
   },
 
+  getClockFormat: () => ipcRenderer.invoke("get-clock-format"),
+  setClockFormat: (format: "12h" | "24h") =>
+    ipcRenderer.send("set-clock-format", format),
+
   saveUploadedFile: (fileBuffer: ArrayBuffer, fileName: string) =>
     ipcRenderer.invoke("save-uploaded-file", fileBuffer, fileName),
   getSavedWallpapers: () => ipcRenderer.invoke("get-saved-wallpapers"),

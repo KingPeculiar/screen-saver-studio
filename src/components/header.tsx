@@ -15,7 +15,7 @@ export default function Header({
 
   return (
     <header>
-      <div className="flex flex-row justify-between items-center pb-6 pt-10">
+      <div className="flex flex-row justify-between items-center pb-6">
         <div className="flex flex-row gap-4 items-center">
           <Button
             className="rounded-2xl h-10 w-10"

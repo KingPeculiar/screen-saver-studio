@@ -7,10 +7,29 @@ import {
   protocol,
   net,
 } from "electron";
+import Store from "electron-store";
 import path from "node:path";
 import started from "electron-squirrel-startup";
 import fs from "node:fs/promises";
 import { pathToFileURL } from "node:url";
+
+interface StoreSchema {
+  clockFormat: "12h" | "24h";
+}
+
+const store = new Store<StoreSchema>({
+  defaults: {
+    clockFormat: "12h",
+  },
+});
+
+ipcMain.handle("get-clock-format", () => {
+  return store.get("clockFormat");
+});
+
+ipcMain.on("set-clock-format", (_event, format: "12h" | "24h") => {
+  store.set("clockFormat", format);
+});
 
 protocol.registerSchemesAsPrivileged([
   {
@@ -42,7 +61,7 @@ const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1000,
-    height: 600,
+    height: 700,
     // frame: false,
     titleBarStyle: "hidden",
     webPreferences: {
@@ -192,7 +211,7 @@ ipcMain.on("window-close", (event: IpcMainEvent): void => {
 app.on("ready", createWindow);
 
 app.whenReady().then(() => {
-  // 2. Handle custom "media://" protocol requests
+  // Handle custom "media://" protocol requests
   protocol.handle("media", (request) => {
     // Convert 'media://custom_wallpapers/image.png' -> actual absolute path
     const url = request.url.replace("media://", "");

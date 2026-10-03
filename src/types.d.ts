@@ -12,6 +12,8 @@ export interface IElectronAPI {
   ) => Promise<SaveFileResult>;
   getSavedWallpapers: () => Promise<string[]>;
   deleteSavedWallpaper: (fileUrlOrName: string) => Promise<DeleteFileResult>;
+  getClockFormat: () => Promise<"12h" | "24h">;
+  setClockFormat: (format: "12h" | "24h") => void;
 }
 
 export interface SaveFileResult {

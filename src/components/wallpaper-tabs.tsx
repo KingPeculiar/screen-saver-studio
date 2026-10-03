@@ -1,6 +1,6 @@
 import React, { useRef, useState, ChangeEvent } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
-import { WandSparkles, Upload } from "lucide-react";
+import { WandSparkles, Upload, Landmark, Feather } from "lucide-react";
 import { assetsByCategory } from "../lib/assets";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -52,7 +52,7 @@ export function WallpaperTabs() {
     <div className="w-full py-8">
       <Tabs defaultValue={defaultCategory} className="w-full">
         <TabsList className="bg-transparent h-full! grid grid-cols-4 gap-5 w-full">
-          {categories.map((folderName) => {
+          {categories.map((folderName, index) => {
             const count = Object.keys(
               assetsByCategory[folderName] || {},
             ).length;
@@ -62,7 +62,9 @@ export function WallpaperTabs() {
                 value={folderName}
                 className="flex items-center gap-2 flex-col p-4 text-white border border-blue-950 bg-gray-900 rounded-3xl capitalize data-[state=active]:bg-blue-900"
               >
-                <WandSparkles size={24} color="#ffffff" />
+                {index === 0 && <WandSparkles color="#9fa0c3" />}
+                {index === 1 && <Landmark color="#9fa0c3" />}
+                {index === 2 && <Feather color="#9fa0c3" />}
                 <p className="text-[18px]">{folderName}</p>
                 <span className="text-xs text-gray-400">{count} items</span>
               </TabsTrigger>
@@ -109,7 +111,7 @@ export function WallpaperTabs() {
                       <img
                         src={url}
                         alt={fileName}
-                        className="w-full h-48 object-cover hover:scale-105 transition-transform duration-200"
+                        className="w-full h-48 mt-0 object-cover hover:scale-105 transition-transform duration-200"
                       />
                     </div>
                   ))}

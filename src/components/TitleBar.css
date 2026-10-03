@@ -22,7 +22,7 @@
   user-select: none;
   border-bottom: 1px solid #2d2d35;
   -webkit-app-region: drag;
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;

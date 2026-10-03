@@ -39,7 +39,7 @@ export default function HomePage() {
   return (
     <main className="typeset typeset-chat m-auto">
       <header>
-        <div className="flex flex-row justify-between items-center pb-5 pt-10">
+        <div className="flex flex-row justify-between items-center pb-4">
           <div className="flex flex-col gap-1">
             <h1>Pick your preference...</h1>
             <p>Choose your screen saver preference below.</p>
