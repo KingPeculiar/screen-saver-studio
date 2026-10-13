@@ -83,13 +83,13 @@ const createWindow = () => {
 
   mainWindow.on("maximize", () => {
     if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.send("window-is-maximized");
+      mainWindow.webContents.send("window-is-maximized", true);
     }
   });
 
   mainWindow.on("unmaximize", () => {
     if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.send("window-is-unmaximized");
+      mainWindow.webContents.send("window-is-unmaximized", false);
     }
   });
 

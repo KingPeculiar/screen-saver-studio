@@ -62,7 +62,9 @@ export function AnalogClock({
   const currentAccentBg = accentBgMap[accentColor] || "bg-(--ring)";
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 bg-gray-900 border border-gray-800 rounded-3xl shadow-xl gap-3">
+    <div
+      className={`flex flex-col items-center justify-center p-6 border border-gray-800 rounded-3xl shadow-xl gap-3 ${currentAccentBg}`}
+    >
       {(showWeather || showBattery) && (
         <div className="flex items-center gap-3 text-xs font-semibold">
           {showWeather && (
@@ -81,17 +83,27 @@ export function AnalogClock({
       )}
 
       {/* Clock Face Container */}
-      <div className="relative w-64 h-64 rounded-full bg-gray-950 border-4 border-gray-800 flex items-center justify-center shadow-inner">
-        <span className="absolute top-2 text-xs font-bold text-gray-500">
+      <div
+        className={`relative w-64 h-64 rounded-full bg-transparent border-4 flex items-center justify-center shadow-inner ${accentBgMap[accentColor] === "bg-(--secondary)" ? "border-gray-900" : ""}`}
+      >
+        <span
+          className={`absolute top-2 text-xs font-bold ${accentBgMap[accentColor] == "bg-(--ring)" ? "text-gray-900" : ""}`}
+        >
           12
         </span>
-        <span className="absolute right-3 text-xs font-bold text-gray-500">
+        <span
+          className={`absolute right-3 text-xs font-bold ${accentBgMap[accentColor] == "bg-(--ring)" ? "text-gray-900" : ""}`}
+        >
           3
         </span>
-        <span className="absolute bottom-2 text-xs font-bold text-gray-500">
+        <span
+          className={`absolute bottom-2 text-xs font-bold ${accentBgMap[accentColor] == "bg-(--ring)" ? "text-gray-900" : ""}`}
+        >
           6
         </span>
-        <span className="absolute left-3 text-xs font-bold text-gray-500">
+        <span
+          className={`absolute left-3 text-xs font-bold ${accentBgMap[accentColor] == "bg-(--ring)" ? "text-gray-900" : ""}`}
+        >
           9
         </span>
 
@@ -102,23 +114,25 @@ export function AnalogClock({
 
         {/* Hour Hand */}
         <div
-          className="absolute z-10 w-1.5 h-16 bg-white rounded-full origin-bottom transition-transform duration-200 ease-linear"
+          className={`absolute z-10 w-1.5 h-16 bg-white rounded-full origin-bottom transition-transform duration-200 ease-linear ${accentBgMap[accentColor] == "bg-(--ring)" ? "bg-gray-600!" : ""}`}
           style={{ bottom: "50%", transform: `rotate(${hoursDegrees}deg)` }}
         />
         {/* Minute Hand */}
         <div
-          className="absolute z-20 w-1 h-22 bg-gray-300 rounded-full origin-bottom transition-transform duration-200 ease-linear"
+          className={`absolute z-20 w-1 h-22 bg-gray-300 rounded-full origin-bottom transition-transform duration-200 ease-linear ${accentBgMap[accentColor] == "bg-(--ring)" ? "bg-gray-400!" : ""}`}
           style={{ bottom: "50%", transform: `rotate(${minutesDegrees}deg)` }}
         />
         {/* Second Hand */}
         <div
-          className={`absolute z-30 w-0.5 h-24 rounded-full origin-bottom transition-transform duration-100 ease-linear ${currentAccentBg}`}
+          className={`absolute z-30 w-0.5 h-24 rounded-full origin-bottom transition-transform duration-100 ease-linear ${accentBgMap[accentColor] == "bg-(--ring)" ? "bg-gray-600" : "bg-gray-50"}`}
           style={{ bottom: "50%", transform: `rotate(${secondsDegrees}deg)` }}
         />
       </div>
 
       <div className="flex flex-col items-center gap-1 mt-2">
-        <div className="text-xs font-mono font-medium text-gray-400">
+        <div
+          className={`text-xs font-mono font-medium text-gray-400 ${accentBgMap[accentColor] == "bg-(--ring)" ? "text-gray-700" : "text-gray-200!"}`}
+        >
           {time.toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
@@ -127,7 +141,11 @@ export function AnalogClock({
           })}
         </div>
         {showDate && (
-          <div className="text-xs text-gray-500 font-medium">{dateString}</div>
+          <div
+            className={`text-xs text-gray-500 font-medium ${accentBgMap[accentColor] == "bg-(--ring)" ? "text-gray-700" : "text-gray-200!"}`}
+          >
+            {dateString}
+          </div>
         )}
       </div>
     </div>

@@ -88,12 +88,14 @@ export function DigitalClock({
 
       <div className={`flex items-center gap-2 mb-1 ${currentAccentClass}`}>
         <ClockIcon size={18} />
-        <span className="text-xs font-semibold uppercase tracking-wider">
+        <span className="text-shadow-xs text-shadow-amber-50 text-xs font-semibold uppercase tracking-wider">
           Current Time
         </span>
       </div>
-      <div className="flex items-baseline gap-1 text-white font-mono">
-        <span className="text-5xl font-bold tracking-tight">
+      <div className="flex items-baseline gap-1 font-mono">
+        <span
+          className={`text-5xl font-bold tracking-tight clock-shadow ${currentAccentClass}`}
+        >
           {formattedTime}
         </span>
       </div>

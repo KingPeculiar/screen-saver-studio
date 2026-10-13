@@ -298,7 +298,20 @@ body {
   background: linear-gradient(90deg, #101828 0%, #061f50 80%);
   background: -webkit-linear-gradient(90deg, #101828 0%, #061f50 80%);
   background: -moz-linear-gradient(90deg, #101828 0%, #061f50 80%);
-  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background-size: 400% 400%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* linear gradients */
@@ -394,4 +407,15 @@ body {
   background-color: #a18cd1;
   background-image: conic-gradient(from var(--spin), #a18cd1 0%, #fbc2eb 100%);
   animation: spin 3s linear infinite;
+}
+
+.clock-shadow {
+  text-shadow:
+    0.5px 0.5px 2px var(--foreground),
+    0 0 1px var(--foreground);
+  /*text-shadow:
+    -1px 0 whitesmoke,
+    0 0.5px whitesmoke,
+    0.5px 0 whitesmoke,
+    0 -1px whitesmoke;*/
 }

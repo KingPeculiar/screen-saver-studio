@@ -1,7 +1,7 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
-import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("electronAPI", {
   minimizeWindow: () => ipcRenderer.send("window-minimize"),
@@ -11,15 +11,15 @@ contextBridge.exposeInMainWorld("electronAPI", {
   isWindowMaximized: () => ipcRenderer.invoke("get-window-maximized-state"),
 
   onMaximizeStateChange: (callback: (isMaximized: boolean) => void) => {
-    const handleMaximize = (event: IpcRendererEvent, isMaximized: boolean) =>
-      callback(isMaximized);
+    const handleMaximize = () => callback(true);
+    const handleUnmaximize = () => callback(false);
 
     ipcRenderer.on("window-is-maximized", handleMaximize);
-    ipcRenderer.on("window-is-unmaximized", handleMaximize);
+    ipcRenderer.on("window-is-unmaximized", handleUnmaximize);
 
     return () => {
       ipcRenderer.removeListener("window-is-maximized", handleMaximize);
-      ipcRenderer.removeListener("window-is-unmaximized", handleMaximize);
+      ipcRenderer.removeListener("window-is-unmaximized", handleUnmaximize);
     };
   },
 

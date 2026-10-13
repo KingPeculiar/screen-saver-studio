@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Maximize2, Minimize2, X, Minus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "./ui/button";
 
 import "./TitleBar.css";
 
@@ -49,7 +49,6 @@ export const TitleBar: React.FC<TitleBarProps> = () => {
             aria-label="Minimize"
             onClick={() => {
               window.electronAPI.minimizeWindow();
-              setActiveMenu(null);
             }}
           >
             <Minus />
@@ -58,10 +57,9 @@ export const TitleBar: React.FC<TitleBarProps> = () => {
             variant="ghost"
             size="icon"
             className="control-btn"
-            aria-label="Maximize"
+            aria-label={isMaximized ? "Restore" : "Maximize"}
             onClick={() => {
               window.electronAPI.maximizeWindow();
-              setActiveMenu(null);
             }}
           >
             {isMaximized ? <Minimize2 /> : <Maximize2 />}
@@ -73,7 +71,6 @@ export const TitleBar: React.FC<TitleBarProps> = () => {
             aria-label="Close"
             onClick={() => {
               window.electronAPI.closeWindow();
-              setActiveMenu(null);
             }}
           >
             <X />

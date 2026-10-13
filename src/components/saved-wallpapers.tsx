@@ -66,16 +66,15 @@ export function SavedWallpapers() {
       ) : (
         <div className="grid grid-cols-3 gap-4">
           {wallpapers.map((mediaUrl) => (
-            <ContextMenu>
+            <ContextMenu key={mediaUrl}>
               <ContextMenuTrigger>
-                <div
-                  key={mediaUrl}
-                  className="overflow-hidden rounded-xl border border-gray-800 bg-gray-950"
-                >
+                <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-950">
                   <img
                     src={mediaUrl}
                     alt="Custom wallpaper"
-                    className="w-full h-40 object-cover m-0 hover:scale-105 transition-transform duration-200"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-40 object-cover m-0 hover:scale-105 transition-transform duration-200 will-change-transform"
                   />
                 </div>
               </ContextMenuTrigger>
