@@ -12,6 +12,7 @@ import path from "node:path";
 import started from "electron-squirrel-startup";
 import fs from "node:fs/promises";
 import { pathToFileURL } from "node:url";
+import type { ScreenSaverLaunchConfig } from "./types";
 
 interface StoreSchema {
   clockFormat: "12h" | "24h";
@@ -45,6 +46,57 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 let mainWindow: BrowserWindow | null = null;
+let screenSaverWindow: BrowserWindow | null = null;
+
+const createScreenSaverWindow = (config: ScreenSaverLaunchConfig) => {
+  if (screenSaverWindow && !screenSaverWindow.isDestroyed()) {
+    screenSaverWindow.focus();
+    return;
+  }
+
+  const window = new BrowserWindow({
+    show: false,
+    fullscreen: true,
+    frame: false,
+    autoHideMenuBar: true,
+    backgroundColor: "#000000",
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+      contextIsolation: true,
+      nodeIntegration: false,
+      spellcheck: false,
+      webSecurity: false,
+    },
+  });
+  screenSaverWindow = window;
+
+  window.once("ready-to-show", () => window.show());
+  window.on("closed", () => {
+    if (screenSaverWindow === window) {
+      screenSaverWindow = null;
+    }
+  });
+
+  const launchQuery = `#/screensaver?config=${encodeURIComponent(JSON.stringify(config))}`;
+  const loadPromise = MAIN_WINDOW_VITE_DEV_SERVER_URL
+    ? window.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}${launchQuery}`)
+    : window.loadFile(
+        path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
+        { hash: launchQuery.slice(1) },
+      );
+
+  void loadPromise.catch((error: unknown) => {
+    console.error("Failed to load screen saver window", error);
+    if (!window.isDestroyed()) {
+      window.close();
+    }
+  });
+};
+
+ipcMain.on(
+  "open-screen-saver-window",
+  (_event, config: ScreenSaverLaunchConfig) => createScreenSaverWindow(config),
+);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {

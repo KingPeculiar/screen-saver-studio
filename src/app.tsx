@@ -31,21 +31,28 @@ const router = createHashRouter([
   },
 ]);
 
-const root = createRoot(document.body);
+const isScreenSaverWindow =
+  window.location.hash.split("?")[0] === "#/screensaver";
+const screenSaverWindow = isScreenSaverWindow ? (
+  <FullscreenScreenSaver />
+) : (
+  <div className="m-auto typeset typeset-chat">
+    <TitleBar title="My Workspace" />
+    <div className="m-auto typeset typeset-chat h-[calc(100vh-80px)] overflow-y-auto">
+      <RouterProvider router={router} />
+    </div>
+    <Toaster />
+    <Footer />
+  </div>
+);
+
+const rootElement = document.getElementById("root");
+if (!rootElement) {
+  throw new Error("Application root element was not found");
+}
+const root = createRoot(rootElement);
 root.render(
-  <>
-    <ThemeProvider storageKey="vite-ui-theme" defaultTheme="system">
-      <ScreenSaverProvider>
-        <div className="m-auto typeset typeset-chat">
-          <TitleBar title="My Workspace" />
-          <div className="m-auto typeset typeset-chat h-[calc(100vh-80px)] overflow-y-auto">
-            <RouterProvider router={router} />
-          </div>
-          <Toaster />
-          <Footer />
-          <FullscreenScreenSaver />
-        </div>
-      </ScreenSaverProvider>
-    </ThemeProvider>
-  </>,
+  <ThemeProvider storageKey="vite-ui-theme" defaultTheme="system">
+    <ScreenSaverProvider>{screenSaverWindow}</ScreenSaverProvider>
+  </ThemeProvider>,
 );

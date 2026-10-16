@@ -10,26 +10,19 @@ export function FullscreenScreenSaver() {
     clockConfig,
     wallpaperConfig,
     gradientConfig,
-    isFullscreen,
-    exitFullscreen,
   } = useScreenSaver();
 
-  // Handle ESC key or click to exit fullscreen
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        exitFullscreen();
+        window.electronAPI.closeWindow();
       }
     };
-    if (isFullscreen) {
-      window.addEventListener("keydown", handleKeyDown);
-    }
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isFullscreen, exitFullscreen]);
-
-  if (!isFullscreen) return null;
+  }, []);
 
   // Resolve wallpaper image URL
   const getWallpaperUrl = () => {
@@ -54,7 +47,7 @@ export function FullscreenScreenSaver() {
 
   return (
     <div
-      onClick={exitFullscreen}
+      onClick={() => window.electronAPI.closeWindow()}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black cursor-pointer overflow-hidden animate-in fade-in-0 duration-300"
     >
       {/* 1. Wallpaper Screen Saver */}

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import type { ScreenSaverLaunchConfig } from "../types";
 
 export type PreferenceType = "wallpaper" | "clock" | "gradient";
 
@@ -30,9 +31,7 @@ interface ScreenSaverContextType {
   setWallpaperConfig: React.Dispatch<React.SetStateAction<WallpaperConfig>>;
   gradientConfig: GradientConfig;
   setGradientConfig: React.Dispatch<React.SetStateAction<GradientConfig>>;
-  isFullscreen: boolean;
-  launchFullscreen: () => void;
-  exitFullscreen: () => void;
+  launchFullscreen: (type?: PreferenceType) => void;
   applyAndLaunch: (type?: PreferenceType) => void;
 }
 
@@ -42,7 +41,6 @@ const STORAGE_KEY = "screen_saver_studio_config";
 
 export function ScreenSaverProvider({ children }: { children: ReactNode }) {
   const [activeType, setActiveType] = useState<PreferenceType>("wallpaper");
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [preferencesLoaded, setPreferencesLoaded] = useState(false);
 
   const [clockConfig, setClockConfig] = useState<ClockConfig>({
@@ -77,6 +75,22 @@ export function ScreenSaverProvider({ children }: { children: ReactNode }) {
         if (parsed.wallpaperConfig) setWallpaperConfig(parsed.wallpaperConfig);
         if (parsed.gradientConfig) setGradientConfig(parsed.gradientConfig);
       }
+
+      const query = window.location.hash.split("?")[1];
+      const serializedConfig = query
+        ? new URLSearchParams(query).get("config")
+        : null;
+      if (serializedConfig) {
+        const launchConfig: unknown = JSON.parse(serializedConfig);
+        if (isScreenSaverLaunchConfig(launchConfig)) {
+          setActiveType(launchConfig.activeType);
+          setClockConfig(launchConfig.clockConfig);
+          setWallpaperConfig(launchConfig.wallpaperConfig);
+          setGradientConfig(launchConfig.gradientConfig);
+        } else {
+          throw new Error("Invalid screen saver launch configuration");
+        }
+      }
     } catch (e) {
       console.error("Failed to load screen saver configuration", e);
     } finally {
@@ -103,14 +117,21 @@ export function ScreenSaverProvider({ children }: { children: ReactNode }) {
     }
   }, [activeType, clockConfig, wallpaperConfig, gradientConfig, preferencesLoaded]);
 
-  const launchFullscreen = () => setIsFullscreen(true);
-  const exitFullscreen = () => setIsFullscreen(false);
-
-  const applyAndLaunch = (type?: PreferenceType) => {
+  const launchFullscreen = (type?: PreferenceType) => {
+    const config: ScreenSaverLaunchConfig = {
+      activeType: type ?? activeType,
+      clockConfig,
+      wallpaperConfig,
+      gradientConfig,
+    };
     if (type) {
       setActiveType(type);
     }
-    setIsFullscreen(true);
+    window.electronAPI.openScreenSaverWindow(config);
+  };
+
+  const applyAndLaunch = (type?: PreferenceType) => {
+    launchFullscreen(type);
   };
 
   return (
@@ -124,15 +145,44 @@ export function ScreenSaverProvider({ children }: { children: ReactNode }) {
         setWallpaperConfig,
         gradientConfig,
         setGradientConfig,
-        isFullscreen,
         launchFullscreen,
-        exitFullscreen,
         applyAndLaunch,
       }}
     >
       {children}
     </ScreenSaverContext.Provider>
   );
+}
+
+function isScreenSaverLaunchConfig(
+  config: unknown,
+): config is ScreenSaverLaunchConfig {
+  if (!isRecord(config)) return false;
+  const candidate = config;
+  const clock = candidate.clockConfig;
+  const wallpaper = candidate.wallpaperConfig;
+  const gradient = candidate.gradientConfig;
+
+  return (
+    ["wallpaper", "clock", "gradient"].includes(String(candidate.activeType)) &&
+    isRecord(clock) &&
+    typeof clock.clockType === "string" &&
+    typeof clock.is24Hour === "boolean" &&
+    typeof clock.accentColor === "string" &&
+    typeof clock.showDate === "boolean" &&
+    typeof clock.showWeather === "boolean" &&
+    typeof clock.showBattery === "boolean" &&
+    isRecord(wallpaper) &&
+    typeof wallpaper.category === "string" &&
+    typeof wallpaper.selectedUrl === "string" &&
+    isRecord(gradient) &&
+    typeof gradient.mode === "string" &&
+    typeof gradient.colorClass === "string"
+  );
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
 }
 
 export function useScreenSaver() {

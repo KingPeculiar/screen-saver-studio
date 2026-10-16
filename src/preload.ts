@@ -2,11 +2,14 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
 import { contextBridge, ipcRenderer } from "electron";
+import type { ScreenSaverLaunchConfig } from "./types";
 
 contextBridge.exposeInMainWorld("electronAPI", {
   minimizeWindow: () => ipcRenderer.send("window-minimize"),
   maximizeWindow: () => ipcRenderer.send("window-maximize"),
   closeWindow: () => ipcRenderer.send("window-close"),
+  openScreenSaverWindow: (config: ScreenSaverLaunchConfig) =>
+    ipcRenderer.send("open-screen-saver-window", config),
 
   isWindowMaximized: () => ipcRenderer.invoke("get-window-maximized-state"),
 
