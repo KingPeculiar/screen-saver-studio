@@ -1,11 +1,11 @@
 {
   "name": "screen-saver-studio",
-  "productName": "screen-saver-studio",
+  "productName": "ScreenSaver Studio",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
   "private": true,
-  "homepage": "https://github.com/KingPeculiar/screen-saver-studio#readme",
+  "homepage": "https://github.com/KingPeculiar/screen-saver-studio",
   "repository": {
     "type": "git",
     "url": "https://github.com/KingPeculiar/screen-saver-studio.git"
