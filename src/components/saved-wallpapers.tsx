@@ -6,17 +6,27 @@ import {
   ContextMenuTrigger,
 } from "./ui/context-menu";
 import { TrashIcon } from "lucide-react";
+import { useScreenSaver } from "../context/screen-saver-context";
 
 export function SavedWallpapers() {
+  const { wallpaperConfig, setWallpaperConfig } = useScreenSaver();
   const [wallpapers, setWallpapers] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [deletingUrl, setDeletingUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const loadWallpapers = async () => {
     setLoading(true);
-    const savedUrls = await window.electronAPI.getSavedWallpapers();
-    setWallpapers(savedUrls);
-    setLoading(false);
+    try {
+      const savedUrls = await window.electronAPI.getSavedWallpapers();
+      setWallpapers(savedUrls);
+      setError(null);
+    } catch (err) {
+      console.error("Failed to load custom wallpapers:", err);
+      setError("Custom wallpapers could not be loaded.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -35,13 +45,18 @@ export function SavedWallpapers() {
       const result = await window.electronAPI.deleteSavedWallpaper(mediaUrl);
 
       if (result.success) {
-        // Remove item from state without needing a full reload
         setWallpapers((prev) => prev.filter((url) => url !== mediaUrl));
+        setWallpaperConfig((current) => ({
+          ...current,
+          selectedUrl:
+            current.selectedUrl === mediaUrl ? "" : current.selectedUrl,
+        }));
       } else {
-        alert(`Failed to delete: ${result.error}`);
+        setError(`Failed to delete wallpaper: ${result.error || "Unknown error"}`);
       }
     } catch (err) {
       console.error("Delete error:", err);
+      setError("The wallpaper could not be deleted.");
     } finally {
       setDeletingUrl(null);
     }
@@ -59,6 +74,11 @@ export function SavedWallpapers() {
         Your Custom Wallpapers
       </h3>
 
+      {error && (
+        <p role="alert" className="mb-4 text-sm text-red-400">
+          {error}
+        </p>
+      )}
       {wallpapers.length === 0 ? (
         <p className="text-sm text-gray-500">
           No custom wallpapers uploaded yet.
@@ -68,7 +88,22 @@ export function SavedWallpapers() {
           {wallpapers.map((mediaUrl) => (
             <ContextMenu key={mediaUrl}>
               <ContextMenuTrigger>
-                <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-950">
+                <button
+                  type="button"
+                  aria-label={`Select custom wallpaper ${mediaUrl}`}
+                  aria-pressed={wallpaperConfig.selectedUrl === mediaUrl}
+                  onClick={() =>
+                    setWallpaperConfig((current) => ({
+                      ...current,
+                      selectedUrl: mediaUrl,
+                    }))
+                  }
+                  className={`relative block w-full overflow-hidden rounded-xl border bg-gray-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
+                    wallpaperConfig.selectedUrl === mediaUrl
+                      ? "border-blue-400"
+                      : "border-gray-800"
+                  }`}
+                >
                   <img
                     src={mediaUrl}
                     alt="Custom wallpaper"
@@ -76,7 +111,12 @@ export function SavedWallpapers() {
                     decoding="async"
                     className="w-full h-40 object-cover m-0 hover:scale-105 transition-transform duration-200 will-change-transform"
                   />
-                </div>
+                  {wallpaperConfig.selectedUrl === mediaUrl && (
+                    <span className="absolute right-2 top-2 rounded-full bg-blue-500 px-2 py-1 text-xs text-white">
+                      Selected
+                    </span>
+                  )}
+                </button>
               </ContextMenuTrigger>
               <ContextMenuContent>
                 <ContextMenuItem

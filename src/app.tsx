@@ -6,9 +6,11 @@ import Clock from "./screens/clock";
 import Gradient from "./screens/gradient";
 import { ThemeProvider } from "./components/theme-provider";
 import { TitleBar } from "./components/title-bar";
-import { createHashRouter, RouterProvider, Link } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import Footer from "./components/footer";
 import { Toaster } from "./components/ui/toast";
+import { ScreenSaverProvider } from "./context/screen-saver-context";
+import { FullscreenScreenSaver } from "./components/fullscreen-screen-saver";
 
 const router = createHashRouter([
   {
@@ -33,14 +35,17 @@ const root = createRoot(document.body);
 root.render(
   <>
     <ThemeProvider storageKey="vite-ui-theme" defaultTheme="system">
-      <div className="m-auto typeset typeset-chat">
-        <TitleBar title="My Workspace" />
-        <div className="m-auto typeset typeset-chat h-[calc(100vh-80px)] overflow-y-auto">
-          <RouterProvider router={router} />
+      <ScreenSaverProvider>
+        <div className="m-auto typeset typeset-chat">
+          <TitleBar title="My Workspace" />
+          <div className="m-auto typeset typeset-chat h-[calc(100vh-80px)] overflow-y-auto">
+            <RouterProvider router={router} />
+          </div>
+          <Toaster />
+          <Footer />
+          <FullscreenScreenSaver />
         </div>
-        <Toaster />
-        <Footer />
-      </div>
+      </ScreenSaverProvider>
     </ThemeProvider>
   </>,
 );

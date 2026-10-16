@@ -19,6 +19,7 @@ export interface IElectronAPI {
 export interface SaveFileResult {
   success: boolean;
   filePath?: string;
+  fileUrl?: string;
   error?: string;
 }
 

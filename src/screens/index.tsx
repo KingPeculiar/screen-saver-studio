@@ -3,14 +3,15 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
+} from "../components/ui/card";
+import { Separator } from "../components/ui/separator";
+import { Button } from "../components/ui/button";
 import React from "react";
 import { ModeToggle } from "../components/mode-toggle";
 import { Badge } from "../components/ui/badge";
 import { Image, Clock, WandSparkles, MoveRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useScreenSaver } from "../context/screen-saver-context";
 
 export default function HomePage() {
   const saver = [
@@ -35,6 +36,8 @@ export default function HomePage() {
   ];
 
   const navigate = useNavigate();
+  const { activeType } = useScreenSaver();
+  const activeSaver = activeType[0].toUpperCase() + activeType.slice(1);
 
   return (
     <main className="typeset typeset-chat m-auto">
@@ -46,7 +49,7 @@ export default function HomePage() {
           </div>
           <div className="flex flex-row items-center gap-4">
             <Badge variant="outline" className="h-8 px-4">
-              Active: Wallpaper
+              Active: {activeSaver}
             </Badge>
             <ModeToggle />
           </div>

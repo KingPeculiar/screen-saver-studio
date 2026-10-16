@@ -4,18 +4,29 @@ import { WandSparkles, Upload, Landmark, Feather } from "lucide-react";
 import { assetsByCategory } from "../lib/assets";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useScreenSaver } from "../context/screen-saver-context";
 
 interface WallpaperThumbnailProps {
   fileName: string;
   url: string;
+  selected: boolean;
+  onSelect: () => void;
 }
 
 const WallpaperThumbnail = memo(
-  ({ fileName, url }: WallpaperThumbnailProps) => {
+  ({ fileName, url, selected, onSelect }: WallpaperThumbnailProps) => {
     const [loaded, setLoaded] = useState(false);
 
     return (
-      <div className="relative overflow-hidden rounded-xl border border-gray-800 bg-gray-900 h-48 w-full">
+      <button
+        type="button"
+        aria-label={`Select wallpaper ${fileName}`}
+        aria-pressed={selected}
+        onClick={onSelect}
+        className={`relative block overflow-hidden rounded-xl border bg-gray-900 h-48 w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
+          selected ? "border-blue-400" : "border-gray-800"
+        }`}
+      >
         {!loaded && (
           <div className="absolute inset-0 bg-gray-800 animate-pulse" />
         )}
@@ -29,24 +40,28 @@ const WallpaperThumbnail = memo(
             loaded ? "opacity-100" : "opacity-0"
           }`}
         />
-      </div>
+        {selected && (
+          <span className="absolute right-2 top-2 rounded-full bg-blue-500 px-2 py-1 text-xs text-white">
+            Selected
+          </span>
+        )}
+      </button>
     );
   },
 );
 
-export function WallpaperTabs() {
+export function WallpaperTabs({
+  onUploadComplete,
+}: {
+  onUploadComplete?: () => void;
+}) {
+  const { wallpaperConfig, setWallpaperConfig } = useScreenSaver();
   const categories = Object.keys(assetsByCategory);
   const defaultCategory = categories[0] || "anime";
-  const [activeCategory, setActiveCategory] = useState<string>(defaultCategory);
+  const activeCategory = wallpaperConfig.category || defaultCategory;
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [savedPath, setSavedPath] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  const handleButtonClick = () => {
-    // Programmatically trigger the file input
-    fileInputRef.current?.click();
-  };
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -65,16 +80,24 @@ export function WallpaperTabs() {
         arrayBuffer,
         file.name,
       );
+      const { fileUrl } = result;
 
-      if (result.success && result.filePath) {
-        setSavedPath(result.filePath);
+      if (result.success && fileUrl) {
+        setWallpaperConfig((current) => ({
+          ...current,
+          selectedUrl: fileUrl,
+        }));
+        onUploadComplete?.();
       } else {
         setError(result.error || "Failed to save wallpaper.");
       }
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred.",
+      );
     } finally {
       setIsSaving(false);
+      e.target.value = "";
     }
   };
 
@@ -83,7 +106,13 @@ export function WallpaperTabs() {
       <Tabs
         value={activeCategory}
         onValueChange={(val) => {
-          if (val) setActiveCategory(val);
+          if (val) {
+            setWallpaperConfig((current) => ({
+              ...current,
+              category: val,
+              selectedUrl: "",
+            }));
+          }
         }}
         className="w-full"
       >
@@ -130,19 +159,24 @@ export function WallpaperTabs() {
             variant="outline"
             className="cursor-pointer flex items-center gap-2 flex-col p-4 text-white border border-blue-950 bg-gray-900 rounded-3xl capitalize data-[state=active]:bg-blue-900 w-full h-full"
           >
-            <Input
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              type="file"
-              accept=".jpg, .jpeg, .png, .gif"
-              className="hidden"
-            />
             <Upload color="#ffffff" />
             <span className="text-[18px] text-gray-400">
               {isSaving ? "Saving..." : "Import Wallpapers"}
             </span>
           </Button>
+          <Input
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            type="file"
+            accept=".jpg, .jpeg, .png, .gif"
+            className="hidden"
+          />
         </TabsList>
+        {error && (
+          <p role="alert" className="mt-3 text-sm text-red-400">
+            {error}
+          </p>
+        )}
         {Object.entries(assetsByCategory).map(([folderName, files]) => {
           const fileEntries = Object.entries(files);
           const isActive = activeCategory === folderName;
@@ -164,6 +198,14 @@ export function WallpaperTabs() {
                       key={fileName}
                       fileName={fileName}
                       url={url}
+                      selected={wallpaperConfig.selectedUrl === url}
+                      onSelect={() =>
+                        setWallpaperConfig((current) => ({
+                          ...current,
+                          category: folderName,
+                          selectedUrl: url,
+                        }))
+                      }
                     />
                   ))}
                 </div>

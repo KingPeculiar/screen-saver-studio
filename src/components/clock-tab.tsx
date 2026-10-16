@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
@@ -17,14 +17,18 @@ import { Field } from "./ui/field";
 import { Checkbox } from "./ui/checkbox";
 import { AnalogClock } from "./analog-clock";
 import { DigitalClock } from "./digital-clock";
+import { useScreenSaver } from "../context/screen-saver-context";
 
 export default function ClockTab() {
-  const [is24Hour, setIs24Hour] = useState<boolean>(false);
-  const [clockType, setClockType] = useState<string>("digital-minimal");
-  const [accentColor, setAccentColor] = useState<string>("ring");
-  const [showDate, setShowDate] = useState<boolean>(true);
-  const [showWeather, setShowWeather] = useState<boolean>(false);
-  const [showBattery, setShowBattery] = useState<boolean>(false);
+  const { clockConfig, setClockConfig } = useScreenSaver();
+  const {
+    is24Hour,
+    clockType,
+    accentColor,
+    showDate,
+    showWeather,
+    showBattery,
+  } = clockConfig;
 
   const visuals = [
     { label: "Digital Minimal", value: "digital-minimal" },
@@ -33,12 +37,12 @@ export default function ClockTab() {
 
   useEffect(() => {
     window.electronAPI.getClockFormat().then((format) => {
-      setIs24Hour(format === "24h");
+      setClockConfig((current) => ({ ...current, is24Hour: format === "24h" }));
     });
-  }, []);
+  }, [setClockConfig]);
 
   const handleToggleFormat = (checked: boolean) => {
-    setIs24Hour(checked);
+    setClockConfig((current) => ({ ...current, is24Hour: checked }));
     window.electronAPI?.setClockFormat(checked ? "24h" : "12h");
   };
 
@@ -96,7 +100,12 @@ export default function ClockTab() {
                 <Select
                   value={clockType}
                   onValueChange={(value) => {
-                    if (value) setClockType(value);
+                    if (value) {
+                      setClockConfig((current) => ({
+                        ...current,
+                        clockType: value,
+                      }));
+                    }
                   }}
                 >
                   <SelectTrigger>
@@ -117,10 +126,14 @@ export default function ClockTab() {
               <div className="flex flex-row justify-between items-center">
                 <Label>Clock Accent Color</Label>
                 <ToggleGroup
-                  type="single"
-                  value={accentColor}
-                  onValueChange={(value) => {
-                    if (value) setAccentColor(value);
+                  value={[accentColor]}
+                  onValueChange={(value: string[]) => {
+                    if (value && value.length > 0) {
+                      setClockConfig((current) => ({
+                        ...current,
+                        accentColor: value[0],
+                      }));
+                    }
                   }}
                 >
                   {["ring", "secondary", "accent", "destructive"].map(
@@ -163,7 +176,12 @@ export default function ClockTab() {
                     id="date-widget"
                     name="date-widget"
                     checked={showDate}
-                    onCheckedChange={(checked) => setShowDate(Boolean(checked))}
+                    onCheckedChange={(checked) =>
+                      setClockConfig((current) => ({
+                        ...current,
+                        showDate: Boolean(checked),
+                      }))
+                    }
                   />
                 </Field>
                 <Separator />
@@ -177,7 +195,10 @@ export default function ClockTab() {
                     name="weather-widget"
                     checked={showWeather}
                     onCheckedChange={(checked) =>
-                      setShowWeather(Boolean(checked))
+                      setClockConfig((current) => ({
+                        ...current,
+                        showWeather: Boolean(checked),
+                      }))
                     }
                   />
                 </Field>
@@ -192,7 +213,10 @@ export default function ClockTab() {
                     name="battery-percentage"
                     checked={showBattery}
                     onCheckedChange={(checked) =>
-                      setShowBattery(Boolean(checked))
+                      setClockConfig((current) => ({
+                        ...current,
+                        showBattery: Boolean(checked),
+                      }))
                     }
                   />
                 </Field>

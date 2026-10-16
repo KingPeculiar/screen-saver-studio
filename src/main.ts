@@ -137,7 +137,12 @@ ipcMain.handle(
     _event: IpcMainInvokeEvent,
     fileBuffer: ArrayBuffer,
     fileName: string,
-  ): Promise<{ success: boolean; filePath?: string; error?: string }> => {
+  ): Promise<{
+    success: boolean;
+    filePath?: string;
+    fileUrl?: string;
+    error?: string;
+  }> => {
     try {
       const dir = await getUploadsDirectory();
       // Sanitize file name and create destination path
@@ -148,7 +153,11 @@ ipcMain.handle(
       const buffer = Buffer.from(fileBuffer);
       await fs.writeFile(destinationPath, buffer);
 
-      return { success: true, filePath: destinationPath };
+      return {
+        success: true,
+        filePath: destinationPath,
+        fileUrl: `media://custom_wallpapers/${safeFileName}`,
+      };
     } catch (err: any) {
       console.error("Failed to save file:", err);
       return { success: false, error: err.message };

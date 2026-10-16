@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { SlidersHorizontal } from "lucide-react";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
+import { useScreenSaver } from "../context/screen-saver-context";
 
 export default function GradientTab() {
-  const [color, setColor] = useState("");
+  const { gradientConfig, setGradientConfig } = useScreenSaver();
+  const { colorClass, mode } = gradientConfig;
 
   const linearColors = [
     { name: "Night fade", className: "night-fade-l" },
@@ -36,7 +38,7 @@ export default function GradientTab() {
       <div
         className={`col-span-3 bg-[#272727] h-72 rounded-4xl overflow-hidden`}
       >
-        <div className={`${color} animate-gradient h-full w-full`}></div>
+        <div className={`${colorClass} animate-gradient h-full w-full`}></div>
       </div>
       <div className="h-[calc(100vh-350px)] overflow-y-hidden col-span-2">
         <Card className="h-full flex flex-col justify-between">
@@ -49,7 +51,12 @@ export default function GradientTab() {
           <Separator />
           <CardContent className="h-full flex flex-col justify-between">
             <Tabs
-              defaultValue="Animated Linear"
+              value={mode}
+              onValueChange={(value) => {
+                if (value) {
+                  setGradientConfig((current) => ({ ...current, mode: value }));
+                }
+              }}
               className="flex flex-col h-full justify-between gap-5"
             >
               <Label htmlFor="gradient-mode">Gradient Mode</Label>
@@ -70,8 +77,13 @@ export default function GradientTab() {
                   {conicColors.map((preset, index) => (
                     <Button
                       key={index}
-                      onClick={() => setColor(preset.className)}
-                      variant={color === preset.className ? "default" : "ghost"}
+                      onClick={() =>
+                        setGradientConfig((current) => ({
+                          ...current,
+                          colorClass: preset.className,
+                        }))
+                      }
+                      variant={colorClass === preset.className ? "default" : "ghost"}
                       className={`w-full ${preset.className}`}
                     >
                       {preset.name}
@@ -88,8 +100,13 @@ export default function GradientTab() {
                   {linearColors.map((preset, index) => (
                     <Button
                       key={index}
-                      onClick={() => setColor(preset.className)}
-                      variant={color === preset.className ? "default" : "ghost"}
+                      onClick={() =>
+                        setGradientConfig((current) => ({
+                          ...current,
+                          colorClass: preset.className,
+                        }))
+                      }
+                      variant={colorClass === preset.className ? "default" : "ghost"}
                       className={`w-full ${preset.className}`}
                     >
                       {preset.name}
@@ -106,8 +123,13 @@ export default function GradientTab() {
                   {auroraColors.map((preset, index) => (
                     <Button
                       key={index}
-                      onClick={() => setColor(preset.className)}
-                      variant={color === preset.className ? "default" : "ghost"}
+                      onClick={() =>
+                        setGradientConfig((current) => ({
+                          ...current,
+                          colorClass: preset.className,
+                        }))
+                      }
+                      variant={colorClass === preset.className ? "default" : "ghost"}
                       className={`w-full ${preset.className} animate-none!`}
                     >
                       {preset.name}

@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../components/Header";
-import ClockTab from "@/components/clock-tab";
+import Header from "../components/header";
+import ClockTab from "../components/clock-tab";
 
 export default function Clock() {
   return (

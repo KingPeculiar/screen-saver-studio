@@ -1,8 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { MoveLeft, Check } from "lucide-react";
+import { Button } from "./ui/button";
+import { Separator } from "./ui/separator";
+import { MoveLeft, Check, Play } from "lucide-react";
+import {
+  useScreenSaver,
+  PreferenceType,
+} from "../context/screen-saver-context";
 
 export default function Header({
   title,
@@ -12,6 +16,9 @@ export default function Header({
   subtitle: string;
 }) {
   const navigate = useNavigate();
+  const { applyAndLaunch, setActiveType } = useScreenSaver();
+
+  const prefType = title.toLowerCase() as PreferenceType;
 
   return (
     <header>
@@ -32,8 +39,21 @@ export default function Header({
             <p className="text-sm">{subtitle}</p>
           </div>
         </div>
-        <div>
-          <Button className="rounded-2xl" variant="secondary" size="default">
+        <div className="flex items-center gap-3">
+          <Button
+            className="rounded-2xl"
+            variant="default"
+            size="default"
+            onClick={() => applyAndLaunch(prefType)}
+          >
+            <Play className="w-4 h-4 mr-1" /> Launch Preview
+          </Button>
+          <Button
+            className="rounded-2xl"
+            variant="secondary"
+            size="default"
+            onClick={() => setActiveType(prefType)}
+          >
             <Check /> Apply Saver
           </Button>
         </div>
