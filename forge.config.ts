@@ -85,14 +85,26 @@ module.exports = {
         icon: 'src/assets/icon-dark.ico'
       }
     },
+    // {
+    //   name: '@electron-forge/maker-wix',
+    //   config: {
+    //     icon: 'src/assets/icon-dark.ico'
+    //   }
+    // }
+  ],
+  publishers: [
     {
-      name: '@electron-forge/maker-wix',
+      name: '@electron-forge/publisher-github',
       config: {
-        icon: 'src/assets/icon-dark.ico'
+        repository: {
+          owner: 'KingPeculiar',
+          name: 'https://github.com/KingPeculiar/screen-saver-studio'
+        },
+        prerelease: false,
+        draft: false // Set to false so releases are public for updater checks
       }
     }
   ]
-  // ...
 };
 
 export default config;
