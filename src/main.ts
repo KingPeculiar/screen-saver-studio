@@ -13,6 +13,30 @@ import started from "electron-squirrel-startup";
 import fs from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import type { ScreenSaverLaunchConfig } from "./types";
+import {autoUpdater} from "electron-updater"
+import log from 'electron-log';
+
+autoUpdater.logger = log;
+(autoUpdater.logger as any).transports.file.level = 'info';
+
+autoUpdater.autoDownload = true;
+
+function checkForUpdates(win: BrowserWindow) {
+  if (!app.isPackaged) {
+    console.log('Skipping update check in development mode.');
+    return;
+  }
+
+  autoUpdater.checkForUpdatesAndNotify();
+
+  autoUpdater.on('update-available', () => {
+    win.webContents.send('update-available');
+  });
+
+  autoUpdater.on('update-downloaded', () => {
+    win.webContents.send('update-downloaded');
+  });
+}
 
 interface StoreSchema {
   clockFormat: "12h" | "24h";
@@ -70,6 +94,10 @@ const createScreenSaverWindow = (config: ScreenSaverLaunchConfig) => {
   });
   screenSaverWindow = window;
 
+  window.webContents.on('did-finish-load', () => {
+    checkForUpdates(window);
+    });
+
   window.once("ready-to-show", () => window.show());
   window.on("closed", () => {
     if (screenSaverWindow === window) {
@@ -92,6 +120,10 @@ const createScreenSaverWindow = (config: ScreenSaverLaunchConfig) => {
     }
   });
 };
+
+ipcMain.on('restart-to-update', () => {
+  autoUpdater.quitAndInstall();
+});
 
 ipcMain.on(
   "open-screen-saver-window",

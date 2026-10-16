@@ -15,6 +15,9 @@ export interface IElectronAPI {
   deleteSavedWallpaper: (fileUrlOrName: string) => Promise<DeleteFileResult>;
   getClockFormat: () => Promise<"12h" | "24h">;
   setClockFormat: (format: "12h" | "24h") => void;
+  onUpdateAvailable: (callback: () => void) => void;
+  onUpdateDownloaded: (callback: () => void) => void;
+  restartAndInstall: () => void;
 }
 
 export interface ScreenSaverLaunchConfig {

@@ -5,6 +5,11 @@
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
   "private": true,
+  "homepage": "https://github.com/KingPeculiar/screen-saver-studio#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KingPeculiar/screen-saver-studio.git"
+  },
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -48,13 +53,17 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
+    "@electron-forge/maker-dmg": "^8.0.1",
+    "@electron-forge/maker-wix": "^8.0.1",
     "@fontsource-variable/figtree": "^5.3.0",
     "@fontsource-variable/geist-mono": "^5.3.0",
     "@fontsource-variable/outfit": "^5.3.0",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",
+    "electron-log": "^5.4.4",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^11.0.2",
+    "electron-updater": "^6.8.9",
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.48.0",
     "react": "^19.3.0",

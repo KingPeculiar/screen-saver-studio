@@ -35,4 +35,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getSavedWallpapers: () => ipcRenderer.invoke("get-saved-wallpapers"),
   deleteSavedWallpaper: (fileUrlOrName: string) =>
     ipcRenderer.invoke("delete-saved-wallpaper", fileUrlOrName),
+  onUpdateAvailable: (callback: () => void) =>
+    ipcRenderer.on('update-available', () => callback()),
+  onUpdateDownloaded: (callback: () => void) =>
+    ipcRenderer.on('update-downloaded', () => callback()),
+  restartAndInstall: () => ipcRenderer.send('restart-to-update'),
 });
