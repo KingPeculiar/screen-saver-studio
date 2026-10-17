@@ -141,6 +141,28 @@ const getUploadsDirectory = async (): Promise<string> => {
   return uploadsPath;
 };
 
+const resolveCustomWallpaperPath = (input: string): string => {
+  const sanitizedInput = input
+    .replace(/^media:\/\//i, "")
+    .replace(/^custom_wallpapers\/+/, "")
+    .replace(/^\/+/, "");
+
+  const rootDirectory = path.resolve(app.getPath("userData"), "custom_wallpapers");
+  const decodedInput = decodeURIComponent(sanitizedInput);
+  const candidatePath = path.resolve(rootDirectory, decodedInput);
+  const relativePath = path.relative(rootDirectory, candidatePath);
+
+  if (
+    candidatePath === rootDirectory ||
+    relativePath.startsWith("..") ||
+    path.isAbsolute(relativePath)
+  ) {
+    throw new Error(`Blocked attempt to access an invalid wallpaper path: ${input}`);
+  }
+
+  return candidatePath;
+};
+
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -306,12 +328,7 @@ app.on("ready", createWindow);
 app.whenReady().then(() => {
   // Handle custom "media://" protocol requests
   protocol.handle("media", (request) => {
-    // Convert 'media://custom_wallpapers/image.png' -> actual absolute path
-    const url = request.url.replace("media://", "");
-    const decodedPath = decodeURIComponent(url);
-    const filePath = path.join(app.getPath("userData"), decodedPath);
-
-    // Serve file safely using net.fetch
+    const filePath = resolveCustomWallpaperPath(request.url);
     return net.fetch(pathToFileURL(filePath).toString());
   });
 

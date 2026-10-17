@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { createRoot } from "react-dom/client";
+import { useEffect, useState } from "react";
 import HomePage from "./screens/index";
 import Wallpaper from "./screens/wallpaper";
 import Clock from "./screens/clock";
@@ -11,9 +10,7 @@ import Footer from "./components/footer";
 import { Toaster } from "./components/ui/toast";
 import { ScreenSaverProvider } from "./context/screen-saver-context";
 import { FullscreenScreenSaver } from "./components/fullscreen-screen-saver";
-
-const [updateReady, setUpdateReady] = useState(false);
-const [updateAvailable, setUpdateAvailable] = useState(false);
+import React from "react";
 
 const router = createHashRouter([
   {
@@ -34,39 +31,38 @@ const router = createHashRouter([
   },
 ]);
 
-useEffect(() => {
-  window.electronAPI.onUpdateAvailable(() => {
-    setUpdateAvailable(true);
-  });
+function App() {
+  const [updateReady, setUpdateReady] = useState(false);
+  const [updateAvailable, setUpdateAvailable] = useState(false);
 
-  window.electronAPI.onUpdateDownloaded(() => {
-    setUpdateReady(true);
-  });
-}, []);
+  useEffect(() => {
+    window.electronAPI.onUpdateAvailable(() => {
+      setUpdateAvailable(true);
+    });
 
-const isScreenSaverWindow =
-  window.location.hash.split("?")[0] === "#/screensaver";
-const screenSaverWindow = isScreenSaverWindow ? (
-  <FullscreenScreenSaver />
-) : (
-  <div className="m-auto typeset typeset-chat">
-    <TitleBar title="My Workspace" />
-    <div className="m-auto typeset typeset-chat h-[calc(100vh-80px)] overflow-y-auto">
-      <RouterProvider router={router} />
+    window.electronAPI.onUpdateDownloaded(() => {
+      setUpdateReady(true);
+    });
+  }, []);
+
+  const isScreenSaverWindow =
+    window.location.hash.split("?")[0] === "#/screensaver";
+  const screenSaverWindow = isScreenSaverWindow ? (
+    <FullscreenScreenSaver />
+  ) : (
+    <div className="m-auto typeset typeset-chat">
+      <TitleBar title="My Workspace" />
+      <div className="m-auto typeset typeset-chat h-[calc(100vh-80px)] overflow-y-auto">
+        <RouterProvider router={router} />
+      </div>
+      <Toaster />
+      <Footer />
     </div>
-    <Toaster />
-    <Footer />
-  </div>
-);
+  );
 
-const rootElement = document.getElementById("root");
-if (!rootElement) {
-  throw new Error("Application root element was not found");
-}
-const root = createRoot(rootElement);
-root.render(
-  <ThemeProvider storageKey="vite-ui-theme" defaultTheme="system">
-    {updateReady && (
+  return (
+    <ThemeProvider storageKey="vite-ui-theme" defaultTheme="system">
+      {updateReady && (
         <div className="mb-6 p-4 bg-blue-900/40 border border-blue-600 rounded-2xl flex justify-between items-center">
           <div>
             <h3 className="font-semibold text-blue-300">Update Downloaded</h3>
@@ -86,6 +82,9 @@ root.render(
           Downloading background update...
         </div>
       )}
-    <ScreenSaverProvider>{screenSaverWindow}</ScreenSaverProvider>
-  </ThemeProvider>,
-);
+      <ScreenSaverProvider>{screenSaverWindow}</ScreenSaverProvider>
+    </ThemeProvider>
+  );
+}
+
+export default App;
