@@ -8,15 +8,25 @@ import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
 
 const config: ForgeConfig = {
+  publishers: [
+   {
+      name: '@electron-forge/publisher-github',
+      config: { repository: { owner: 'KingPeculiar', name: 'screen-saver-studio' }, prerelease: false, draft: false },
+    },
+  ],
   packagerConfig: {
     asar: true,
   },
   rebuildConfig: {},
   makers: [
-    new MakerSquirrel({}),
+    new MakerSquirrel({
+      setupIcon: 'public/icon-dark.ico',
+      iconUrl:
+        'https://github.com/KingPeculiar/screen-saver-studio/blob/main/public/icon-dark.ico',
+    }),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
-    new MakerDeb({}),
+    new MakerDeb({ options: { icon: 'src/assets/icon-dark.png' } }),
   ],
   plugins: [
     new VitePlugin({
@@ -26,19 +36,19 @@ const config: ForgeConfig = {
         {
           // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
           entry: 'src/main.ts',
-          config: 'vite.main.config.ts',
+          config: 'vite.main.config.mts',
           target: 'main',
         },
         {
           entry: 'src/preload.ts',
-          config: 'vite.preload.config.ts',
+          config: 'vite.preload.config.mts',
           target: 'preload',
         },
       ],
       renderer: [
         {
           name: 'main_window',
-          config: 'vite.renderer.config.ts',
+          config: 'vite.renderer.config.mts',
         },
       ],
     }),
@@ -54,57 +64,6 @@ const config: ForgeConfig = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
-};
-
-// forge.config.js
-module.exports = {
-  // ...
-  makers: [
-    {
-      name: '@electron-forge/maker-squirrel',
-      config: {
-        // An URL to an ICO file to use as the application icon (displayed in Control Panel > Programs and Features).
-        iconUrl: 'src/assets/icon-dark.ico',
-        // The ICO file to use as the icon for the generated Setup.exe
-        setupIcon: 'src/assets/icon-dark.ico'
-      }
-    },
-    {
-      // Path to a single image that will act as icon for the application
-      name: '@electron-forge/maker-deb',
-      config: {
-        options: {
-          icon: 'src/assets/icon-dark.png'
-        }
-      }
-    },
-    {
-      // Path to the icon to use for the app in the DMG window
-      name: '@electron-forge/maker-dmg',
-      config: {
-        icon: 'src/assets/icon-dark.ico'
-      }
-    },
-    // {
-    //   name: '@electron-forge/maker-wix',
-    //   config: {
-    //     icon: 'src/assets/icon-dark.ico'
-    //   }
-    // }
-  ],
-  publishers: [
-    {
-      name: '@electron-forge/publisher-github',
-      config: {
-        repository: {
-          owner: 'KingPeculiar',
-          name: 'https://github.com/KingPeculiar/screen-saver-studio'
-        },
-        prerelease: false,
-        draft: false // Set to false so releases are public for updater checks
-      }
-    }
-  ]
 };
 
 export default config;
