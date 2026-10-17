@@ -1,5 +1,4 @@
 import type { ForgeConfig } from '@electron-forge/shared-types';
-import { MakerSquirrel } from '@electron-forge/maker-squirrel';
 import { MakerZIP } from '@electron-forge/maker-zip';
 import { MakerDeb } from '@electron-forge/maker-deb';
 import { MakerRpm } from '@electron-forge/maker-rpm';
@@ -16,17 +15,25 @@ const config: ForgeConfig = {
   ],
   packagerConfig: {
     asar: true,
+    icon: 'public/icon-dark',
+    ignore: [
+      /^\/release($|\/)/,
+      /^\/out($|\/)/,
+      /^\/src($|\/)/,
+      /^\/\.git($|\/)/,
+    ],
   },
   rebuildConfig: {},
   makers: [
-    new MakerSquirrel({
-      setupIcon: 'public/icon-dark.ico',
-      iconUrl:
-        'https://github.com/KingPeculiar/screen-saver-studio/blob/main/public/icon-dark.ico',
-    }),
+    // new MakerSquirrel({
+    //   authors: 'KingPeculiar',
+    //   setupIcon: 'public/icon-dark.ico',
+    //   iconUrl:
+    //     'https://github.com/KingPeculiar/screen-saver-studio/blob/main/public/icon-dark.ico',
+    // }),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
-    new MakerDeb({ options: { icon: 'src/assets/icon-dark.png' } }),
+    new MakerDeb({ options: { icon: 'public/icon-dark.ico' } }),
   ],
   plugins: [
     new VitePlugin({

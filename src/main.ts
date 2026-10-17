@@ -9,7 +9,7 @@ import {
 } from "electron";
 import Store from "electron-store";
 import path from "node:path";
-import started from "electron-squirrel-startup";
+// import started from "electron-squirrel-startup";
 import fs from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import type { ScreenSaverLaunchConfig } from "./types";
@@ -131,9 +131,9 @@ ipcMain.on(
 );
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (started) {
-  app.quit();
-}
+// if (started) {
+//   app.quit();
+// }
 
 const getUploadsDirectory = async (): Promise<string> => {
   const uploadsPath = path.join(app.getPath("userData"), "custom_wallpapers");
@@ -211,7 +211,7 @@ const createWindow = () => {
   mainWindow.setMenuBarVisibility(false);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 
 ipcMain.handle(

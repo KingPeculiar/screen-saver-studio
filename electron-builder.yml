@@ -1,0 +1,16 @@
+appId: com.kingpeculiar.screensaverstudio
+productName: ScreenSaver Studio
+directories:
+  output: release
+win:
+  target: nsis
+  icon: public/icon-dark.ico
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  differentialPackage: false
+publish:
+  provider: github
+  owner: KingPeculiar
+  repo: screen-saver-studio
+compression: normal
