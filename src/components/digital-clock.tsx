@@ -70,7 +70,7 @@ export function DigitalClock({
   }, []);
 
   return (
-    <div className="clock flex flex-col items-center justify-center p-6 bg-gray-900/80 border border-gray-800 rounded-3xl backdrop-blur-md w-full h-auto min-h-45 shadow-2xl gap-2">
+    <div className="w-full h-full clock flex flex-col items-center justify-center gap-4 p-6 bg-gray-900/80 border border-gray-800 rounded-3xl backdrop-blur-md w-full h-auto min-h-45 shadow-2xl gap-2">
       <div className="flex items-center gap-4 text-xs font-semibold text-gray-400">
         {showWeather && (
           <div className="flex items-center gap-1 bg-gray-800/60 px-2.5 py-1 rounded-full text-amber-300">
@@ -86,7 +86,8 @@ export function DigitalClock({
         )}
       </div>
 
-      <div className={`flex items-center gap-2 mb-1 ${currentAccentClass}`}>
+      <div className="flex items-center justify-center gap-3 flex-col">
+        <div className={`flex items-center gap-2 mb-1 ${currentAccentClass}`}>
         <ClockIcon size={18} />
         <span className="text-shadow-xs text-shadow-amber-50 text-xs font-semibold uppercase tracking-wider">
           Current Time
@@ -102,6 +103,7 @@ export function DigitalClock({
       {showDate && (
         <div className="text-sm text-gray-400 font-medium">{dateString}</div>
       )}
+      </div>
     </div>
   );
 }

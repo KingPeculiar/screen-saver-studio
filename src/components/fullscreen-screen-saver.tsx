@@ -48,7 +48,7 @@ export function FullscreenScreenSaver() {
   return (
     <div
       onClick={() => window.electronAPI.closeWindow()}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black cursor-pointer overflow-hidden animate-in fade-in-0 duration-300"
+      className="w-full h-full bg-black cursor-pointer animate-in fade-in-0 duration-300"
     >
       {/* 1. Wallpaper Screen Saver */}
       {activeType === "wallpaper" && (
@@ -66,9 +66,8 @@ export function FullscreenScreenSaver() {
 
       {/* 2. Clock Screen Saver */}
       {activeType === "clock" && (
-        <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-gray-950">
-          <div className="absolute inset-0 bg-gradient-to-tr from-blue-950/30 via-transparent to-purple-950/30 pointer-events-none" />
-          <div className="scale-125 transform">
+        <div>
+          <div className="absolute w-full h-full scale-125 transform">
             {clockConfig.clockType === "analog-classic" ? (
               <AnalogClock
                 is24Hour={clockConfig.is24Hour}
@@ -87,7 +86,7 @@ export function FullscreenScreenSaver() {
               />
             )}
           </div>
-          <div className="absolute bottom-6 text-gray-500 text-xs">
+          <div className="relative bottom-6 text-gray-500 text-xs">
             Press ESC or click anywhere to exit screen saver
           </div>
         </div>

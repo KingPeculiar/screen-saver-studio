@@ -63,7 +63,7 @@ export function AnalogClock({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center p-6 border border-gray-800 rounded-3xl shadow-xl gap-3 ${currentAccentBg}`}
+      className={`w-full h-full flex flex-col items-center justify-center p-6 border border-gray-800 rounded-3xl shadow-xl gap-3 ${currentAccentBg}`}
     >
       {(showWeather || showBattery) && (
         <div className="flex items-center gap-3 text-xs font-semibold">
