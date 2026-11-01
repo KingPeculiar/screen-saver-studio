@@ -129,23 +129,32 @@ export function WallpaperTabs({
                 value={folderName}
                 className={`flex items-center gap-2 flex-col p-4 rounded-3xl capitalize transition-all cursor-pointer ${
                   isTabActive
-                    ? "bg-[#9fa0c3]! border border-blue-500 text-gray-900! shadow-lg shadow-blue-950/50"
-                    : "bg-[#aed9e0] border border-blue-950 hover:text-gray-900! text-white"
+                    ? "bg-[#9fa0c3]! border border-blue-500 text-white! shadow-lg shadow-blue-950/50"
+                    : "bg-[#aed9e0] border border-blue-950 hover:text-gray-900! text-gray-900!"
                 }`}
               >
                 {index === 0 && (
-                  <WandSparkles color={isTabActive ? "#f2f8f8" : "#60a5fa"} />
+                  <WandSparkles
+                    className="size-6"
+                    color={isTabActive ? "#bcf8ec" : "#60a5fa"}
+                  />
                 )}
                 {index === 1 && (
-                  <Landmark color={isTabActive ? "#60a5fa" : "#bcf8ec"} />
+                  <Landmark
+                    className="size-6"
+                    color={isTabActive ? "#bcf8ec" : "#60a5fa"}
+                  />
                 )}
                 {index === 2 && (
-                  <Feather color={isTabActive ? "#60a5fa" : "#bcf8ec"} />
+                  <Feather
+                    className="size-6"
+                    color={isTabActive ? "#bcf8ec" : "#60a5fa"}
+                  />
                 )}
                 <p className="text-[18px]">{folderName}</p>
                 <span
                   className={`text-xs ${
-                    isTabActive ? "text-blue-900" : "text-gray-400"
+                    isTabActive ? "text-[#bcf8ec]" : "text-blue-400"
                   }`}
                 >
                   {count} items
@@ -157,7 +166,7 @@ export function WallpaperTabs({
             onClick={() => fileInputRef.current?.click()}
             disabled={isSaving}
             variant="outline"
-            className="cursor-pointer flex items-center gap-2 flex-col p-4 text-white border border-blue-950 bg-gray-900 rounded-3xl capitalize data-[state=active]:bg-blue-900 w-full h-full"
+            className="cursor-pointer flex items-center gap-2 flex-col p-4 text-white border border-blue-950 bg-(--secondary) rounded-3xl capitalize data-[state=active]:bg-blue-900 w-full h-full"
           >
             <Upload color="#ffffff" />
             <span className="text-[18px] text-gray-400">
