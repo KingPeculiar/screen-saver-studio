@@ -59,11 +59,11 @@ export default function HomePage() {
           {saver.map((s, index) => (
             <Card
               key={index}
-              className="flex flex-col gap-4 cursor-pointer"
+              className="flex flex-col gap-4 cursor-pointer bg-(--secondary) border border-(--primary) hover:shadow-xl/20 transition delay-100 duration-200 ease-in-out"
               onClick={() => navigate(`/${s.title.toLowerCase()}`)}
             >
               <CardHeader className="px-8 py-4">
-                <span className="flex flex-row items-center p-4 bg-[#BCF8EC] max-w-max rounded-4xl">
+                <span className="flex flex-row items-center p-4 bg-(--primary) max-w-max rounded-4xl">
                   <s.icon size={32} color="#000000" />
                 </span>
               </CardHeader>

@@ -50,7 +50,7 @@ function App() {
   const screenSaverWindow = isScreenSaverWindow ? (
     <FullscreenScreenSaver />
   ) : (
-    <div className="m-auto typeset typeset-chat">
+    <div className="m-auto typeset typeset-chat bg-(--muted)">
       <TitleBar title="My Workspace" />
       <div className="m-auto typeset typeset-chat h-[calc(100vh-80px)] overflow-y-auto">
         <RouterProvider router={router} />
@@ -66,7 +66,9 @@ function App() {
         <div className="mb-6 p-4 bg-blue-900/40 border border-blue-600 rounded-2xl flex justify-between items-center">
           <div>
             <h3 className="font-semibold text-blue-300">Update Downloaded</h3>
-            <p className="text-xs text-gray-300">A new version of ScreenSaver Studio is ready to install.</p>
+            <p className="text-xs text-gray-300">
+              A new version of ScreenSaver Studio is ready to install.
+            </p>
           </div>
           <button
             onClick={() => window.electronAPI.restartAndInstall()}

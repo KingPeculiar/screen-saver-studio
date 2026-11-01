@@ -129,23 +129,23 @@ export function WallpaperTabs({
                 value={folderName}
                 className={`flex items-center gap-2 flex-col p-4 rounded-3xl capitalize transition-all cursor-pointer ${
                   isTabActive
-                    ? "bg-blue-900! border border-blue-500 text-white shadow-lg shadow-blue-950/50"
-                    : "bg-gray-900 border border-blue-950 text-gray-300 hover:bg-gray-800 hover:text-white"
+                    ? "bg-[#9fa0c3]! border border-blue-500 text-gray-900! shadow-lg shadow-blue-950/50"
+                    : "bg-[#aed9e0] border border-blue-950 hover:text-gray-900! text-white"
                 }`}
               >
                 {index === 0 && (
-                  <WandSparkles color={isTabActive ? "#60a5fa" : "#9fa0c3"} />
+                  <WandSparkles color={isTabActive ? "#f2f8f8" : "#60a5fa"} />
                 )}
                 {index === 1 && (
-                  <Landmark color={isTabActive ? "#60a5fa" : "#9fa0c3"} />
+                  <Landmark color={isTabActive ? "#60a5fa" : "#bcf8ec"} />
                 )}
                 {index === 2 && (
-                  <Feather color={isTabActive ? "#60a5fa" : "#9fa0c3"} />
+                  <Feather color={isTabActive ? "#60a5fa" : "#bcf8ec"} />
                 )}
                 <p className="text-[18px]">{folderName}</p>
                 <span
                   className={`text-xs ${
-                    isTabActive ? "text-blue-200" : "text-gray-400"
+                    isTabActive ? "text-blue-900" : "text-gray-400"
                   }`}
                 >
                   {count} items
