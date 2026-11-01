@@ -1,6 +1,12 @@
 import React, { useRef, useState, ChangeEvent, memo } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
-import { WandSparkles, Upload, Landmark, Feather } from "lucide-react";
+import {
+  WandSparkles,
+  Upload,
+  Landmark,
+  Feather,
+  CarFront,
+} from "lucide-react";
 import { assetsByCategory } from "../lib/assets";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -116,7 +122,7 @@ export function WallpaperTabs({
         }}
         className="w-full"
       >
-        <TabsList className="bg-transparent h-full! grid grid-cols-4 gap-5 w-full">
+        <TabsList className="bg-transparent h-full! grid grid-cols-5 gap-5 w-full">
           {categories.map((folderName, index) => {
             const count = Object.keys(
               assetsByCategory[folderName] || {},
@@ -127,7 +133,7 @@ export function WallpaperTabs({
               <TabsTrigger
                 key={folderName}
                 value={folderName}
-                className={`flex items-center gap-2 flex-col p-4 rounded-3xl capitalize transition-all cursor-pointer ${
+                className={`flex items-center gap-2 flex-col p-4 rounded-3xl hover:scale-105 transition-transform capitalize hover:shadow-xl/20 delay-100 duration-200 ease-in-out cursor-pointer ${
                   isTabActive
                     ? "bg-[#9fa0c3]! border border-blue-500 text-white! shadow-lg shadow-blue-950/50"
                     : "bg-[#aed9e0] border border-blue-950 hover:text-gray-900! text-gray-900!"
@@ -140,12 +146,18 @@ export function WallpaperTabs({
                   />
                 )}
                 {index === 1 && (
-                  <Landmark
+                  <CarFront
                     className="size-6"
                     color={isTabActive ? "#bcf8ec" : "#60a5fa"}
                   />
                 )}
                 {index === 2 && (
+                  <Landmark
+                    className="size-6"
+                    color={isTabActive ? "#bcf8ec" : "#60a5fa"}
+                  />
+                )}
+                {index === 3 && (
                   <Feather
                     className="size-6"
                     color={isTabActive ? "#bcf8ec" : "#60a5fa"}
