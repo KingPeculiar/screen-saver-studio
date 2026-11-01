@@ -88,21 +88,21 @@ export function DigitalClock({
 
       <div className="flex items-center justify-center gap-3 flex-col">
         <div className={`flex items-center gap-2 mb-1 ${currentAccentClass}`}>
-        <ClockIcon size={18} />
-        <span className="text-shadow-xs text-shadow-amber-50 text-xs font-semibold uppercase tracking-wider">
-          Current Time
-        </span>
-      </div>
-      <div className="flex items-baseline gap-1 font-mono">
-        <span
-          className={`text-5xl font-bold tracking-tight clock-shadow ${currentAccentClass}`}
-        >
-          {formattedTime}
-        </span>
-      </div>
-      {showDate && (
-        <div className="text-sm text-gray-400 font-medium">{dateString}</div>
-      )}
+          <ClockIcon size={18} />
+          <span className="text-shadow-xs text-shadow-amber-50 text-xs font-semibold uppercase tracking-wider">
+            Current Time
+          </span>
+        </div>
+        <div className="flex items-baseline gap-1 font-mono">
+          <span
+            className={`text-5xl font-bold tracking-tight clock-shadow ${currentAccentClass}`}
+          >
+            {formattedTime}
+          </span>
+        </div>
+        {showDate && (
+          <div className="text-sm text-gray-400 font-medium">{dateString}</div>
+        )}
       </div>
     </div>
   );

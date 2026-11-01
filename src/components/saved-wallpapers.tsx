@@ -52,7 +52,9 @@ export function SavedWallpapers() {
             current.selectedUrl === mediaUrl ? "" : current.selectedUrl,
         }));
       } else {
-        setError(`Failed to delete wallpaper: ${result.error || "Unknown error"}`);
+        setError(
+          `Failed to delete wallpaper: ${result.error || "Unknown error"}`,
+        );
       }
     } catch (err) {
       console.error("Delete error:", err);
@@ -63,16 +65,12 @@ export function SavedWallpapers() {
   };
 
   if (loading) {
-    return (
-      <div className="text-gray-400 text-sm">Loading custom wallpapers...</div>
-    );
+    return <div className="text-sm">Loading custom wallpapers...</div>;
   }
 
   return (
     <div className="w-full py-6">
-      <h3 className="text-lg font-semibold text-white mb-4">
-        Your Custom Wallpapers
-      </h3>
+      <h3 className="text-lg font-semibold mb-4">Your Custom Wallpapers</h3>
 
       {error && (
         <p role="alert" className="mb-4 text-sm text-red-400">
@@ -80,9 +78,7 @@ export function SavedWallpapers() {
         </p>
       )}
       {wallpapers.length === 0 ? (
-        <p className="text-sm text-gray-500">
-          No custom wallpapers uploaded yet.
-        </p>
+        <p className="text-sm">No custom wallpapers uploaded yet.</p>
       ) : (
         <div className="grid grid-cols-3 gap-4">
           {wallpapers.map((mediaUrl) => (
@@ -98,7 +94,7 @@ export function SavedWallpapers() {
                       selectedUrl: mediaUrl,
                     }))
                   }
-                  className={`relative block w-full overflow-hidden rounded-xl border bg-gray-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
+                  className={`relative block w-full overflow-hidden rounded-xl border bg-(--destructive) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
                     wallpaperConfig.selectedUrl === mediaUrl
                       ? "border-blue-400"
                       : "border-gray-800"

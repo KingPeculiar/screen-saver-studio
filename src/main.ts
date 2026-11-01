@@ -13,28 +13,28 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import type { ScreenSaverLaunchConfig } from "./types";
-import {autoUpdater} from "electron-updater"
-import log from 'electron-log';
+import { autoUpdater } from "electron-updater";
+import log from "electron-log";
 
 autoUpdater.logger = log;
-(autoUpdater.logger as any).transports.file.level = 'info';
+(autoUpdater.logger as any).transports.file.level = "info";
 
 autoUpdater.autoDownload = true;
 
 function checkForUpdates(win: BrowserWindow) {
   if (!app.isPackaged) {
-    console.log('Skipping update check in development mode.');
+    console.log("Skipping update check in development mode.");
     return;
   }
 
   autoUpdater.checkForUpdatesAndNotify();
 
-  autoUpdater.on('update-available', () => {
-    win.webContents.send('update-available');
+  autoUpdater.on("update-available", () => {
+    win.webContents.send("update-available");
   });
 
-  autoUpdater.on('update-downloaded', () => {
-    win.webContents.send('update-downloaded');
+  autoUpdater.on("update-downloaded", () => {
+    win.webContents.send("update-downloaded");
   });
 }
 
@@ -94,9 +94,9 @@ const createScreenSaverWindow = (config: ScreenSaverLaunchConfig) => {
   });
   screenSaverWindow = window;
 
-  window.webContents.on('did-finish-load', () => {
+  window.webContents.on("did-finish-load", () => {
     checkForUpdates(window);
-    });
+  });
 
   window.once("ready-to-show", () => window.show());
   window.on("closed", () => {
@@ -121,7 +121,7 @@ const createScreenSaverWindow = (config: ScreenSaverLaunchConfig) => {
   });
 };
 
-ipcMain.on('restart-to-update', () => {
+ipcMain.on("restart-to-update", () => {
   autoUpdater.quitAndInstall();
 });
 
@@ -147,7 +147,10 @@ const resolveCustomWallpaperPath = (input: string): string => {
     .replace(/^custom_wallpapers\/+/, "")
     .replace(/^\/+/, "");
 
-  const rootDirectory = path.resolve(app.getPath("userData"), "custom_wallpapers");
+  const rootDirectory = path.resolve(
+    app.getPath("userData"),
+    "custom_wallpapers",
+  );
   const decodedInput = decodeURIComponent(sanitizedInput);
   const candidatePath = path.resolve(rootDirectory, decodedInput);
   const relativePath = path.relative(rootDirectory, candidatePath);
@@ -157,7 +160,9 @@ const resolveCustomWallpaperPath = (input: string): string => {
     relativePath.startsWith("..") ||
     path.isAbsolute(relativePath)
   ) {
-    throw new Error(`Blocked attempt to access an invalid wallpaper path: ${input}`);
+    throw new Error(
+      `Blocked attempt to access an invalid wallpaper path: ${input}`,
+    );
   }
 
   return candidatePath;
@@ -167,7 +172,7 @@ const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1000,
-    height: 700,
+    height: 900,
     // frame: false,
     titleBarStyle: "hidden",
     webPreferences: {

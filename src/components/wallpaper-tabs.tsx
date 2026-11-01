@@ -23,12 +23,12 @@ const WallpaperThumbnail = memo(
         aria-label={`Select wallpaper ${fileName}`}
         aria-pressed={selected}
         onClick={onSelect}
-        className={`relative block overflow-hidden rounded-xl border bg-gray-900 h-48 w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
+        className={`relative block overflow-hidden rounded-xl border bg-(--destructive) h-48 w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
           selected ? "border-blue-400" : "border-gray-800"
         }`}
       >
         {!loaded && (
-          <div className="absolute inset-0 bg-gray-800 animate-pulse" />
+          <div className="absolute inset-0 bg-(--destructive) animate-pulse" />
         )}
         <img
           src={url}
@@ -168,8 +168,8 @@ export function WallpaperTabs({
             variant="outline"
             className="cursor-pointer flex items-center gap-2 flex-col p-4 text-white border border-blue-950 bg-(--secondary) rounded-3xl capitalize data-[state=active]:bg-blue-900 w-full h-full"
           >
-            <Upload color="#ffffff" />
-            <span className="text-[18px] text-gray-400">
+            <Upload className="size-6" color="#60a5fa" />
+            <span className="text-[18px]">
               {isSaving ? "Saving..." : "Import Wallpapers"}
             </span>
           </Button>

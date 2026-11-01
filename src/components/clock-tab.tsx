@@ -49,7 +49,7 @@ export default function ClockTab() {
   return (
     <div className="w-full pt-8">
       <Tabs>
-        <TabsList className="w-full bg-gray-900/90 h-12! rounded-3xl">
+        <TabsList className="w-full bg-(--primary) h-12! rounded-3xl">
           <TabsTrigger value="format" className="rounded-2xl">
             Format
           </TabsTrigger>

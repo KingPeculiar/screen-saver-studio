@@ -40,7 +40,7 @@ export default function GradientTab() {
       >
         <div className={`${colorClass} animate-gradient h-full w-full`}></div>
       </div>
-      <div className="h-[calc(100vh-350px)] overflow-y-hidden col-span-2">
+      <div className="h-[calc(100vh-350px)] overflow-y-hidden col-span-2 shadow-sm rounded-2xl">
         <Card className="h-full flex flex-col justify-between">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -83,7 +83,9 @@ export default function GradientTab() {
                           colorClass: preset.className,
                         }))
                       }
-                      variant={colorClass === preset.className ? "default" : "ghost"}
+                      variant={
+                        colorClass === preset.className ? "default" : "ghost"
+                      }
                       className={`w-full ${preset.className}`}
                     >
                       {preset.name}
@@ -106,7 +108,9 @@ export default function GradientTab() {
                           colorClass: preset.className,
                         }))
                       }
-                      variant={colorClass === preset.className ? "default" : "ghost"}
+                      variant={
+                        colorClass === preset.className ? "default" : "ghost"
+                      }
                       className={`w-full ${preset.className}`}
                     >
                       {preset.name}
@@ -129,7 +133,9 @@ export default function GradientTab() {
                           colorClass: preset.className,
                         }))
                       }
-                      variant={colorClass === preset.className ? "default" : "ghost"}
+                      variant={
+                        colorClass === preset.className ? "default" : "ghost"
+                      }
                       className={`w-full ${preset.className} animate-none!`}
                     >
                       {preset.name}
