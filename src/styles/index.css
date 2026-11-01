@@ -180,12 +180,6 @@
   --color-chart-1: var(--chart-1);
 }
 
-p,
-span,
-div {
-  color: var(--foreground) !;
-}
-
 .dark {
   /* Base Background & Text */
   --background: #272727;

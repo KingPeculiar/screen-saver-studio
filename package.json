@@ -1,7 +1,7 @@
 {
   "name": "screen-saver-studio",
   "productName": "ScreenSaver Studio",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple screen saver app built with electron forge",
   "main": ".vite/build/main.js",
   "private": true,
